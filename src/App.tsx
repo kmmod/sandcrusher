@@ -1,28 +1,19 @@
-import type { Component } from 'solid-js';
+import type { Component } from "solid-js";
 
-import logo from './logo.svg';
-import styles from './App.module.css';
+import logo from "./logo.svg";
+import styles from "./App.module.css";
+import { add } from "./lib/main";
 
 const App: Component = () => {
+  const sum = add(5, 2);
+
   return (
-    <div class={styles.App}>
-      <header class={styles.header}>
-        <img src={logo} class={styles.logo} alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <p>
-          It looks like REACT
-        </p>
-        <a
-          class={styles.link}
-          href="https://github.com/solidjs/solid"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn Solid
-        </a>
-      </header>
+    <div class="m-0">
+        <div class="absolute h-full w-full -z-10">
+          <img class="object-cover h-full w-full" src ="/img/pyramids-background.png" alt="pyramids" />
+        </div>
+        <img src="/img/gem.png" alt="gem" />
+        <h1 class="text-3xl font-bold underline">SandCrusher</h1>
     </div>
   );
 };
