@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import * as PIXI from "pixi.js";
 
 const app = new PIXI.Application();
 
@@ -6,7 +6,7 @@ const app = new PIXI.Application();
 document.body.appendChild(app.view);
 
 // load the texture we need
-const texture = await PIXI.Assets.load('/img/gem.png');
+const texture = await PIXI.Assets.load("/img/gem.png");
 
 // This creates a texture from a 'bunny.png' image
 const bunny = new PIXI.Sprite(texture);
@@ -24,8 +24,6 @@ app.stage.addChild(bunny);
 
 // Listen for frame updates
 app.ticker.add(() => {
-    // each frame we spin the bunny around a bit
-    bunny.rotation += 0.01;
+  // each frame we spin the bunny around a bit
+  bunny.rotation += 0.01;
 });
-
-export const add = (a: number, b: number) => a + b;
