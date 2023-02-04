@@ -1,29 +1,54 @@
 import * as PIXI from "pixi.js";
 
-const app = new PIXI.Application();
+export class Game {
+  app: PIXI.Application<PIXI.ICanvas>;
+  count: number;
+  countCallback: any;
+  xVar: number;
+  text: PIXI.Text;
 
-// @ts-ignore
-document.body.appendChild(app.view);
+  constructor(callback: any) {
+    this.app = new PIXI.Application();
+    this.count = 0;
+    this.xVar = 0;
+    this.text = new PIXI.Text();
+    this.countCallback = callback;
+    this.init();
+  }
 
-// load the texture we need
-const texture = await PIXI.Assets.load("/img/gem.png");
+  init(): void {
+    const graphics = new PIXI.Graphics();
 
-// This creates a texture from a 'bunny.png' image
-const bunny = new PIXI.Sprite(texture);
+    graphics.beginFill(0xde3249);
+    graphics.drawRect(50, 50, 100, 100);
+    graphics.endFill();
 
-// Setup the position of the bunny
-bunny.x = app.renderer.width / 2;
-bunny.y = app.renderer.height / 2;
+    graphics.interactive = true;
+    graphics.cursor = "pointer";
 
-// Rotate around the center
-bunny.anchor.x = 0.5;
-bunny.anchor.y = 0.5;
+    graphics.on("pointerdown", () => {
+      this.xVar += 1;
+      this.countCallback(this.xVar);
+    });
 
-// Add the bunny to the scene we are building
-app.stage.addChild(bunny);
+    this.text = new PIXI.Text("Click me, increment in pixi", {
+      fill: 0xffffff,
+      fontSize: 20,
+    });
+    this.text.x = 65;
+    this.text.y = 65;
 
-// Listen for frame updates
-app.ticker.add(() => {
-  // each frame we spin the bunny around a bit
-  bunny.rotation += 0.01;
-});
+    graphics.addChild(this.text);
+
+    this.app.stage.addChild(graphics);
+  }
+
+  getView(): HTMLCanvasElement {
+    return this.app.view as HTMLCanvasElement;
+  }
+
+  setCount(newCount: number): void {
+    this.count = newCount;
+    this.text.text = `Click me, increment in pixi \n ${this.count}`;
+  }
+}

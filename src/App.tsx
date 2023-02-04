@@ -1,4 +1,5 @@
 import type { Component } from "solid-js";
+import GameScreen from "./components/GameScreen";
 
 const App: Component = () => {
   return (
@@ -13,6 +14,7 @@ const App: Component = () => {
       <div class="w-full">
         <h1 class="text-3xl font-bold text-center">SandCrusher</h1>
       </div>
+      <GameScreen />
     </div>
   );
 };
