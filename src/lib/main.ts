@@ -4,19 +4,21 @@ export class Game {
   app: PIXI.Application<PIXI.ICanvas>;
   count: number;
   countCallback: any;
-  xVar: number;
   text: PIXI.Text;
+  xVar: number;
 
   constructor(callback: any) {
-    this.app = new PIXI.Application();
+    this.app = new PIXI.Application({backgroundAlpha: 0.4});
     this.count = 0;
-    this.xVar = 0;
-    this.text = new PIXI.Text();
     this.countCallback = callback;
+    this.text = new PIXI.Text();
+    this.xVar = 0;
     this.init();
+    this.update();
   }
 
   init(): void {
+
     const graphics = new PIXI.Graphics();
 
     graphics.beginFill(0xde3249);
@@ -43,6 +45,10 @@ export class Game {
     this.app.stage.addChild(graphics);
   }
 
+  update(): void {
+    this.app.ticker.add(() => {});
+  }
+
   getView(): HTMLCanvasElement {
     return this.app.view as HTMLCanvasElement;
   }
@@ -50,5 +56,9 @@ export class Game {
   setCount(newCount: number): void {
     this.count = newCount;
     this.text.text = `Click me, increment in pixi \n ${this.count}`;
+  }
+
+  setResizeElement(): void {
+    this.app.resizeTo = document.getElementById("game-container") as HTMLElement;
   }
 }

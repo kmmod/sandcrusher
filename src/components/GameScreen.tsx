@@ -1,5 +1,5 @@
 import type { Component } from "solid-js";
-import { createSignal, createEffect } from "solid-js";
+import { createSignal, createEffect, onCleanup, onMount } from "solid-js";
 import { Game } from "../lib/main";
 
 const GameScreen: Component = () => {
@@ -9,9 +9,15 @@ const GameScreen: Component = () => {
 
   createEffect(() => game.setCount(count()));
 
+  onMount(() => {
+    game.setResizeElement();
+  });
+
   return (
     <>
-    <h1 class="text-center">Communication between SolidJS component and PixiJS application</h1>
+      <h1 class="text-center text-slate-500">
+        Communication between SolidJS component and PixiJS application
+      </h1>
       <div class="backdrop-grayscale text-white text-center font-medium m-1">
         Set variable from component and pass to container {count()}
       </div>
@@ -26,7 +32,11 @@ const GameScreen: Component = () => {
           Click me: increment in component
         </button>
       </div>
-      <div>{game.getView()}</div>;
+      <div class="flex justify-center p-2 w-full">
+      <div id="game-container" class="flex justify-center w-full lg:w-11/12">
+        {game.getView()}
+      </div>
+      </div>
     </>
   );
 };
