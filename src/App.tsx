@@ -15,9 +15,6 @@ const App: Component = () => {
           alt="pyramids"
         />
       </div>
-      <div class="w-full">
-        <h1 class="text-3xl font-bold text-center text-white">SandCrusher</h1>
-      </div>
       <GameScreen />
     </div>
   );
