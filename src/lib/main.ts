@@ -9,6 +9,8 @@ export class Game {
   resizeElement: HTMLElement | null;
   bindResize: () => void;
   dragTarget: PIXI.Sprite | null;
+  bindDragEnd: () => void;
+  bindDragMove: () => void;
 
   constructor(callback: any) {
     this.app = new PIXI.Application({ backgroundAlpha: 0.4 });
@@ -19,6 +21,8 @@ export class Game {
     this.resizeElement = null;
     this.dragTarget = null;
     this.bindResize = () => this.resize();
+    this.bindDragEnd = () => this.onDragEnd();
+    this.bindDragMove = (event) => this.onDragMove(event);
     this.init();
     this.update();
   }
@@ -52,7 +56,7 @@ export class Game {
   }
 
   initGems(): void {
-    const gem_red = PIXI.Sprite.from("/img/gem-gold.png");
+    const gem_red = PIXI.Sprite.from("/img/gem-red.png");
     gem_red.anchor.set(0.5);
 
     gem_red.x = this.app.screen.width / 2;
@@ -60,7 +64,25 @@ export class Game {
 
     gem_red.interactive = true;
 
+    gem_red.on("pointerdown", () => {
+      this.dragTarget = gem_red;
+      this.app.stage.on("pointermove", this.bindDragMove);
+    });
+
     this.app.stage.addChild(gem_red);
+
+    this.app.stage.on("pointerup", this.bindDragEnd);
+    this.app.stage.on("pointerupoutside", this.bindDragEnd);
+  }
+
+  onDragMove(event: PIXI.FederatedMouseEvent): void {
+    if (!this.dragTarget) return;
+    this.dragTarget.position.set(event.global.x, event.global.y);
+  }
+
+  onDragEnd(): void {
+    this.app.stage.off("pointermove", this.bindDragMove);
+    this.dragTarget = null;
   }
 
   update(): void {
