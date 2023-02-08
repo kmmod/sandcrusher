@@ -2,57 +2,52 @@ import * as PIXI from "pixi.js";
 
 export class Game {
   app: PIXI.Application<PIXI.ICanvas>;
-  count: number;
-  countCallback: any;
-  text: PIXI.Text;
-  xVar: number;
-  resizeElement: HTMLElement | null;
+  bindDragEnd: () => void;
+  bindDragMove: (event: PIXI.FederatedMouseEvent) => void;
   bindResize: () => void;
   dragTarget: PIXI.Sprite | null;
-  bindDragEnd: () => void;
-  bindDragMove: () => void;
+  resizeElement: HTMLElement | null;
 
-  constructor(callback: any) {
-    this.app = new PIXI.Application({ backgroundAlpha: 0.4 });
-    this.count = 0;
-    this.countCallback = callback;
-    this.text = new PIXI.Text();
-    this.xVar = 0;
+  constructor() {
+    this.app = this.setPixiApp();
     this.resizeElement = null;
     this.dragTarget = null;
     this.bindResize = () => this.resize();
     this.bindDragEnd = () => this.onDragEnd();
     this.bindDragMove = (event) => this.onDragMove(event);
-    this.init();
-    this.update();
   }
 
-  init(): void {
-    const graphics = new PIXI.Graphics();
+  setPixiApp(): PIXI.Application {
+    const options = {
+      backgroundAlpha: 0.4,
+    };
+    return new PIXI.Application(options);
+  }
 
-    graphics.beginFill(0xde3249);
-    graphics.drawRect(50, 50, 100, 100);
-    graphics.endFill();
-
-    graphics.interactive = true;
-    graphics.cursor = "pointer";
-
-    graphics.on("pointerdown", () => {
-      this.xVar += 1;
-      this.countCallback(this.xVar);
-    });
-
-    this.text = new PIXI.Text("Click me, increment in pixi", {
-      fill: 0xffffff,
-      fontSize: 20,
-    });
-    this.text.x = 65;
-    this.text.y = 65;
-
-    graphics.addChild(this.text);
+  setResizeElement(id = "game-container"): void {
+    this.resizeElement = document.getElementById(id) as HTMLElement;
 
     window.addEventListener("resize", this.bindResize);
-    this.app.stage.addChild(graphics);
+    this.resize();
+  }
+
+  resize(): void {
+    if (!this.resizeElement) return;
+
+    const width = this.resizeElement.clientWidth;
+    const height = this.resizeElement.clientHeight;
+
+    if (width > height) {
+      this.app.renderer.resize(height, height);
+    } else {
+      this.app.renderer.resize(width, width);
+    }
+  }
+
+  init(): void {}
+
+  update(): void {
+    this.app.ticker.add(() => {});
   }
 
   initGems(): void {
@@ -85,37 +80,7 @@ export class Game {
     this.dragTarget = null;
   }
 
-  update(): void {
-    this.app.ticker.add(() => {});
-  }
-
   getView(): HTMLCanvasElement {
     return this.app.view as HTMLCanvasElement;
-  }
-
-  setCount(newCount: number): void {
-    this.count = newCount;
-    this.text.text = `Click me, increment in pixi \n ${this.count}`;
-  }
-
-  setResizeElement(): void {
-    this.resizeElement = document.getElementById(
-      "game-container"
-    ) as HTMLElement;
-    this.resize();
-    this.initGems();
-  }
-
-  resize(): void {
-    if (!this.resizeElement) return;
-
-    const width = this.resizeElement.clientWidth;
-    const height = this.resizeElement.clientHeight;
-
-    if (width > height) {
-      this.app.renderer.resize(height, height);
-    } else {
-      this.app.renderer.resize(width, width);
-    }
   }
 }
