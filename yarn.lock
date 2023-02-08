@@ -469,6 +469,56 @@
   dependencies:
     "@types/css-font-loading-module" "^0.0.7"
 
+"@pixi/canvas-display@7.1.2":
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-display/-/canvas-display-7.1.2.tgz#3e901b64e44a44195cc29264d04421bf6421edc2"
+  integrity sha512-4uqH6k2YbbpklJ6i0fkHYCzW6E9M8qQksznS6hlAGFIZ4C6gqJO+rbFVeQHQBFhPrxyKBTkRF6cg4Rdt/tbKdg==
+
+"@pixi/canvas-extract@7.1.2":
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-extract/-/canvas-extract-7.1.2.tgz#272c5d6a824f4cee4d56866646a13420f4d5a44e"
+  integrity sha512-tLuKO7gzswQOst949KZnIl//o02kQvvYVJmx5ABlYX0z1a8VPP2gmiyCvrSPraOEDSq9Xk/vXSYwPsRlF+sNMg==
+
+"@pixi/canvas-graphics@7.1.2":
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-graphics/-/canvas-graphics-7.1.2.tgz#ae3c15ee13f2fb4e0af53291bdf2bd7e0ecc395b"
+  integrity sha512-Eu4WSXK/5v2S5stvyVRv3r+kiJwfTX22U0iPFGuex6ZAgtxZskLYaydWstcJ3qP+ECqfJZiIuzUQA1NoUK6CFQ==
+
+"@pixi/canvas-mesh@7.1.2":
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-mesh/-/canvas-mesh-7.1.2.tgz#30817a1702570b0d5dc6f2397007025a4831cd26"
+  integrity sha512-X9OZ/1BZAFcgz37Ja1sP55267Hr/q5JabcOS4gq8CBedQE1E3QxSMtDO+mESpcF7HePXHZNkV07Q/pRe8KnYYw==
+
+"@pixi/canvas-particle-container@7.1.2":
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-particle-container/-/canvas-particle-container-7.1.2.tgz#76bc127d72a7b37c6c231942523f5838519968fa"
+  integrity sha512-E4MEzzN46b0KcRrM2JOsY/h8sbMfGFQr5xaXLxC8N7zDmZnnYXMzr+YQ3H+/cLm9MANGxWZ7EiTJelesgdIW6w==
+
+"@pixi/canvas-prepare@7.1.2":
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-prepare/-/canvas-prepare-7.1.2.tgz#25edf12948c8aac7d28eb3b67388a4ff79caea64"
+  integrity sha512-Xm5nS6ikYJtLGGjpdHS62EdmylVl3IB0hd6ZUC6LETBR69bb3Nq0wSTsbSi6kQBQg7oBMWdI1LHoKafo310iKg==
+
+"@pixi/canvas-renderer@7.1.2":
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-renderer/-/canvas-renderer-7.1.2.tgz#a38596d52ca47d80729d115a34b5ff5d38459ad8"
+  integrity sha512-EDuWd9iAalSyWqcRAxXGDKiHfY2gfiKqBzDregL93H9fNS+BfRE4RsFatRdsITkbxcVNtEg13B+JDRk2HR63aA==
+
+"@pixi/canvas-sprite-tiling@7.1.2":
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-sprite-tiling/-/canvas-sprite-tiling-7.1.2.tgz#31a943bd1174eff853fed17f789471b555fd6744"
+  integrity sha512-1F7Yh+JA7Th8ACOb8pkfFqakORJNgkQDzsiNMgsc7oDrrU/lONExzAG7pVq7JQYZ4VaGy8HU9FJkHN8sOiZUgg==
+
+"@pixi/canvas-sprite@7.1.2":
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-sprite/-/canvas-sprite-7.1.2.tgz#efc1b59264e715dc03ebe8bbf6dce6bcc039e5ec"
+  integrity sha512-C91ButpHqh0X2EdNkjbZRJM4Xy2uKYd9MXiEwpUP78PUbCJtY59z5A9hCwLCGMDyrb1dEBCNhvjRNeZCaRVgWA==
+
+"@pixi/canvas-text@7.1.2":
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-text/-/canvas-text-7.1.2.tgz#e617f45b5bd286bc8adca240736b78ece328b2d6"
+  integrity sha512-eY1dpy+gaYcSzq49H6xMFJ9mzZcFIjA8j6Y8RJIqwcky9pqn9txuqRFr9o1JLJ5iOfAy7rdMjFYpmW1cx8uOnA==
+
 "@pixi/compressed-textures@7.1.2":
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/@pixi/compressed-textures/-/compressed-textures-7.1.2.tgz#d868ffe715ec638ade1b00c9919758e8fb4e1b72"
@@ -987,6 +1037,11 @@ cssesc@^3.0.0:
   resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
   integrity sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==
 
+cssfontparser@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/cssfontparser/-/cssfontparser-1.2.1.tgz#f4022fc8f9700c68029d542084afbaf425a3f3e3"
+  integrity sha512-6tun4LoZnj7VN6YeegOVb67KBX/7JJsqvj+pv3ZA7F878/eN33AbGa5b/S/wXxS/tcp8nc40xRUrsPlxIyNUPg==
+
 cssom@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/cssom/-/cssom-0.5.0.tgz#d254fa92cd8b6fbd83811b9fbaed34663cc17c36"
@@ -1355,6 +1410,14 @@ is-what@^4.1.8:
   resolved "https://registry.yarnpkg.com/is-what/-/is-what-4.1.8.tgz#0e2a8807fda30980ddb2571c79db3d209b14cbe4"
   integrity sha512-yq8gMao5upkPoGEU9LsB2P+K3Kt8Q3fQFCGyNCWOAnJAMzEXVV9drYb0TXr42TTliLLhKIBvulgAXgtLLnwzGA==
 
+jest-canvas-mock@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/jest-canvas-mock/-/jest-canvas-mock-2.4.0.tgz#947b71442d7719f8e055decaecdb334809465341"
+  integrity sha512-mmMpZzpmLzn5vepIaHk5HoH3Ka4WykbSoLuG/EKoJd0x0ID/t+INo1l8ByfcUJuDM+RIsL4QDg/gDnBbrj2/IQ==
+  dependencies:
+    cssfontparser "^1.2.1"
+    moo-color "^1.0.2"
+
 js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -1486,6 +1549,13 @@ mlly@^1.0.0, mlly@^1.1.0:
     pkg-types "^1.0.1"
     ufo "^1.0.1"
 
+moo-color@^1.0.2:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/moo-color/-/moo-color-1.0.3.tgz#d56435f8359c8284d83ac58016df7427febece74"
+  integrity sha512-i/+ZKXMDf6aqYtBhuOcej71YSlbjT3wCO/4H1j8rPvxDJEifdwgg5MaFyu6iYAT8GBZJg2z0dkgK4YMzvURALQ==
+  dependencies:
+    color-name "^1.1.4"
+
 ms@2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
@@ -1577,7 +1647,24 @@ pify@^2.3.0:
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
   integrity sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==
 
-pixi.js@*, pixi.js@^7.1.2:
+pixi.js-legacy@^7.1.2:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/pixi.js-legacy/-/pixi.js-legacy-7.1.2.tgz#122d0152978a3524b2a0f6adbb454a39c0efc612"
+  integrity sha512-jmXxFhCcg++V//aTmyNt0s3s2tSH6RKnilyUEL2KDjs0pR2q8jdWhExWgUqGlA30DkgPk6MNXPzA4Ox62+GxLA==
+  dependencies:
+    "@pixi/canvas-display" "7.1.2"
+    "@pixi/canvas-extract" "7.1.2"
+    "@pixi/canvas-graphics" "7.1.2"
+    "@pixi/canvas-mesh" "7.1.2"
+    "@pixi/canvas-particle-container" "7.1.2"
+    "@pixi/canvas-prepare" "7.1.2"
+    "@pixi/canvas-renderer" "7.1.2"
+    "@pixi/canvas-sprite" "7.1.2"
+    "@pixi/canvas-sprite-tiling" "7.1.2"
+    "@pixi/canvas-text" "7.1.2"
+    pixi.js "7.1.2"
+
+pixi.js@*, pixi.js@7.1.2, pixi.js@^7.1.2:
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/pixi.js/-/pixi.js-7.1.2.tgz#4169eeccc9a7f6aff012b9c78e0c3f57aab7286a"
   integrity sha512-bPEn8e/fwm/8u+Y1CTUsGtFqZXhX+s4ZL+unuPVoaSmad/YTdP/YJekxr1SdDY+Ho5JiFFagh7XgZxB08N/xvw==
@@ -2084,6 +2171,13 @@ vitefu@^0.2.3:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/vitefu/-/vitefu-0.2.4.tgz#212dc1a9d0254afe65e579351bed4e25d81e0b35"
   integrity sha512-fanAXjSaf9xXtOOeno8wZXIhgia+CZury481LsDaV++lSvcU2R9Ch2bPh3PYFyoHW+w9LqAeYRISVQjUIew14g==
+
+vitest-canvas-mock@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/vitest-canvas-mock/-/vitest-canvas-mock-0.2.2.tgz#2417786c2a970dd0e7a2e86db1bd2b069dc97256"
+  integrity sha512-xWieqkTMWa7hXbmHcUP9HOnn4qM8/0pK043BD5bD3ipCpr2tNuEn300necwB3Eh2WZp8QV2k1RelXx50fJDT6g==
+  dependencies:
+    jest-canvas-mock "^2.4.0"
 
 vitest@^0.28.4:
   version "0.28.4"
