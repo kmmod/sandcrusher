@@ -1,7 +1,7 @@
 import { assert, expect, test } from "vitest";
 import { Game } from "../../src/lib/main";
 
-test("Game instance initalization", () => {
+test("Game instance is properly initialized", () => {
   const game = new Game();
 
   expect(game.app).toBeDefined();
