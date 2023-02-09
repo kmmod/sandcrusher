@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js";
+import { Board } from "./board";
 
 export class Game {
   app: PIXI.Application<PIXI.ICanvas>;
@@ -6,15 +7,18 @@ export class Game {
   bindDragMove: (event: PIXI.FederatedMouseEvent) => void;
   bindResize: () => void;
   dragTarget: PIXI.Sprite | null;
-  resizeElement: HTMLElement | null;
+  resizeElement: HTMLDivElement | null;
+  board: Board;
 
-  constructor() {
+  constructor(columns: number, rows: number) {
     this.app = this.setPixiApp();
     this.resizeElement = null;
     this.dragTarget = null;
     this.bindResize = () => this.resize();
     this.bindDragEnd = () => this.onDragEnd();
     this.bindDragMove = (event) => this.onDragMove(event);
+    // before creating the board all the assets should be loaded
+    this.board = new Board(columns, rows);
   }
 
   setPixiApp(): PIXI.Application {
@@ -24,8 +28,8 @@ export class Game {
     return new PIXI.Application(options);
   }
 
-  setResizeElement(id = "game-container"): void {
-    this.resizeElement = document.getElementById(id) as HTMLElement;
+  setResizeElement(container: HTMLDivElement): void {
+    this.resizeElement = container;
 
     window.addEventListener("resize", this.bindResize);
     this.resize();
@@ -42,9 +46,22 @@ export class Game {
     } else {
       this.app.renderer.resize(width, width);
     }
+
+    const size = this.app.renderer.width;
+    this.board.updateTiles(size, size);
   }
 
-  init(): void {}
+  init(): void {
+    this.renderTiles();
+  }
+
+  renderTiles(): void {
+    const tiles = this.board.getTiles();
+
+    tiles.forEach((tile) => {
+      this.app.stage.addChild(tile.sprite);
+    });
+  }
 
   update(): void {
     this.app.ticker.add(() => {});
