@@ -1,31 +1,42 @@
 import * as PIXI from "pixi.js";
+import * as TWEEDLE from "tweedle.js";
 import { Board } from "./board";
+import { timer } from "./utils";
 
 export class Game {
   app: PIXI.Application<PIXI.ICanvas>;
   bindDragEnd: () => void;
   bindDragMove: (event: PIXI.FederatedMouseEvent) => void;
   bindResize: () => void;
-  dragTarget: PIXI.Sprite | null;
-  resizeElement: HTMLDivElement | null;
-  board: Board;
+  dragTarget: PIXI.Sprite | undefined;
+  resizeElement: HTMLDivElement | undefined;
+  board: Board | undefined;
+  columns: number;
+  rows: number;
+  assets: { textures: { [name: string]: PIXI.Texture } };
 
   constructor(columns: number, rows: number) {
+    this.columns = columns;
+    this.rows = rows;
     this.app = this.setPixiApp();
-    this.resizeElement = null;
-    this.dragTarget = null;
+    this.resizeElement = undefined;
+    this.dragTarget = undefined;
     this.bindResize = () => this.resize();
     this.bindDragEnd = () => this.onDragEnd();
     this.bindDragMove = (event) => this.onDragMove(event);
-    // before creating the board all the assets should be loaded
-    this.board = new Board(columns, rows);
+    this.board = undefined;
+    this.assets = { textures: {} };
   }
 
   setPixiApp(): PIXI.Application {
     const options = {
-      backgroundAlpha: 0.4,
+      backgroundAlpha: 0,
     };
-    return new PIXI.Application(options);
+
+    const app = new PIXI.Application(options);
+    app.ticker.add(() => TWEEDLE.Group.shared.update());
+
+    return app;
   }
 
   setResizeElement(container: HTMLDivElement): void {
@@ -47,20 +58,57 @@ export class Game {
       this.app.renderer.resize(width, width);
     }
 
+    if (this.board) {
+      const size = this.app.renderer.width;
+      this.board.updateTiles(size, size);
+    }
+  }
+
+  async init(): Promise<void> {
+    await this.loadAssets();
+    this.createBoard();
+    await timer(1000);
+    this.createGems();
+  }
+
+  async loadAssets(): Promise<void> {
+    const tile = await PIXI.Assets.load("/img/tile.png");
+    const gem_red = await PIXI.Assets.load("/img/gem-red.png");
+    const gem_blue = await PIXI.Assets.load("/img/gem-blue.png");
+    const gem_green = await PIXI.Assets.load("/img/gem-green.png");
+    const gem_purple = await PIXI.Assets.load("/img/gem-purple.png");
+    const gem_yellow = await PIXI.Assets.load("/img/gem-yellow.png");
+
+    const textures = {
+      tile,
+      gem_red,
+      gem_blue,
+      gem_green,
+      gem_purple,
+      gem_yellow,
+    };
+
+    this.assets = {
+      textures,
+    };
+  }
+
+  createBoard(): void {
+    this.board = new Board(this.columns, this.rows);
+
     const size = this.app.renderer.width;
     this.board.updateTiles(size, size);
-  }
 
-  init(): void {
-    this.renderTiles();
-  }
-
-  renderTiles(): void {
     const tiles = this.board.getTiles();
 
     tiles.forEach((tile) => {
+      tile.show();
       this.app.stage.addChild(tile.sprite);
     });
+  }
+
+  createGems(): void {
+    // init gem handler
   }
 
   update(): void {
@@ -94,7 +142,7 @@ export class Game {
 
   onDragEnd(): void {
     this.app.stage.off("pointermove", this.bindDragMove);
-    this.dragTarget = null;
+    this.dragTarget = undefined;
   }
 
   getView(): HTMLCanvasElement {

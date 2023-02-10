@@ -20,10 +20,13 @@ describe("Board is properly created", () => {
   });
 
   let id = 0;
-  test.each(board.tiles)("Tile has a unique id and a sprite", (tile) => {
+  let lastSprite: PIXI.Sprite = PIXI.Sprite.from("/img/tile.png");
+  test.each(board.tiles)("Tile has a unique id and a unique sprite", (tile) => {
     expect(tile.id).toBe(id);
     expect(tile.sprite).toBeInstanceOf(PIXI.Sprite);
+    expect(tile.sprite).not.toBe(lastSprite);
     id += 1;
+    lastSprite = tile.sprite;
   });
 });
 

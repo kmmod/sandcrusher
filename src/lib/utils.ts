@@ -1,1 +1,3 @@
-export const add = (a: number, b: number) => a + b;
+export const timer = async (duration: number) => {
+  return await new Promise((resolve) => setTimeout(resolve, duration));
+};

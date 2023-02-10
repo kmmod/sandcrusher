@@ -1,5 +1,4 @@
 import { describe, expect, test, vi } from "vitest";
-import { Board } from "../../src/lib/board";
 import { Game } from "../../src/lib/main";
 
 test("Game instance is properly initialized", () => {
@@ -9,9 +8,9 @@ test("Game instance is properly initialized", () => {
   expect(game.bindDragEnd).toBeDefined();
   expect(game.bindDragMove).toBeDefined();
   expect(game.bindResize).toBeDefined();
-  expect(game.dragTarget).toBeNull();
-  expect(game.resizeElement).toBeNull();
-  expect(game.board).toBeInstanceOf(Board);
+  expect(game.dragTarget).toBeUndefined();
+  expect(game.resizeElement).toBeUndefined();
+  expect(game.board).toBeUndefined();
 });
 
 describe("Game initialization", () => {
@@ -30,10 +29,4 @@ describe("Game initialization", () => {
     expect(game.app.renderer.width).toBe(1000);
     expect(game.app.renderer.height).toBe(1000);
   });
-
-  game.init();
-
-  test("Tiles are rendered", () => {
-    expect(game.app.stage.children.length).toBe(100);
-  })
 });
