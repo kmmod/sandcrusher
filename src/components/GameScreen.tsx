@@ -17,7 +17,8 @@ const GameScreen: Component = () => {
         <p class="text-white">Sandcrusher</p>
       </div>
       {/* @ts-ignore */}
-      <div ref={container}
+      <div
+        ref={container}
         class="flex justify-center items-center p-2 w-full h-4/6"
       >
         {game.getView()}
