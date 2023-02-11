@@ -1,31 +1,29 @@
 import * as PIXI from "pixi.js";
 import * as TWEEDLE from "tweedle.js";
+import { Assets } from "./assets";
 import { Board } from "./board";
+import { Gem, GemType } from "./gem";
 import { timer } from "./utils";
 
 export class Game {
   app: PIXI.Application<PIXI.ICanvas>;
+  board: Board;
+  assets: Assets;
   bindDragEnd: () => void;
   bindDragMove: (event: PIXI.FederatedMouseEvent) => void;
   bindResize: () => void;
   dragTarget: PIXI.Sprite | undefined;
   resizeElement: HTMLDivElement | undefined;
-  board: Board | undefined;
-  columns: number;
-  rows: number;
-  assets: { textures: { [name: string]: PIXI.Texture } };
 
   constructor(columns: number, rows: number) {
-    this.columns = columns;
-    this.rows = rows;
     this.app = this.setPixiApp();
+    this.assets = new Assets();
+    this.board = new Board(columns, rows);
     this.resizeElement = undefined;
     this.dragTarget = undefined;
     this.bindResize = () => this.resize();
     this.bindDragEnd = () => this.onDragEnd();
     this.bindDragMove = (event) => this.onDragMove(event);
-    this.board = undefined;
-    this.assets = { textures: {} };
   }
 
   setPixiApp(): PIXI.Application {
@@ -65,36 +63,15 @@ export class Game {
   }
 
   async init(): Promise<void> {
-    await this.loadAssets();
+    await this.assets.loadTileAssets();
     this.createBoard();
-    await timer(1000);
+    await Promise.all([this.assets.loadGemAssets(), timer(1000)]);
     this.createGems();
   }
 
-  async loadAssets(): Promise<void> {
-    const tile = await PIXI.Assets.load("/img/tile.png");
-    const gem_red = await PIXI.Assets.load("/img/gem-red.png");
-    const gem_blue = await PIXI.Assets.load("/img/gem-blue.png");
-    const gem_green = await PIXI.Assets.load("/img/gem-green.png");
-    const gem_purple = await PIXI.Assets.load("/img/gem-purple.png");
-    const gem_yellow = await PIXI.Assets.load("/img/gem-yellow.png");
-
-    const textures = {
-      tile,
-      gem_red,
-      gem_blue,
-      gem_green,
-      gem_purple,
-      gem_yellow,
-    };
-
-    this.assets = {
-      textures,
-    };
-  }
-
   createBoard(): void {
-    this.board = new Board(this.columns, this.rows);
+    const tileTexture = this.assets.getTileTexture("tile");
+    this.board.createTiles(tileTexture);
 
     const size = this.app.renderer.width;
     this.board.updateTiles(size, size);
@@ -108,7 +85,24 @@ export class Game {
   }
 
   createGems(): void {
-    // init gem handler
+    for (let i = 0; i < 25; i++) {
+      const randomType = Math.floor(Math.random() * 4);
+      const gemType = Object.values(GemType)[randomType];
+
+      const randomTile = Math.floor(Math.random() * this.board.tiles.length);
+
+      const newGem = new Gem(gemType, this.assets.getGemTexture(gemType));
+      if (this.board.tiles[randomTile].gem) {
+        continue;
+      }
+      this.board.tiles[randomTile].addGem(newGem);
+      newGem.show();
+      this.app.stage.addChild(newGem.sprite);
+    }
+    // const gemRed = new Gem(GemType.Red, this.assets.getGemTexture(GemType.Red));
+    // this.board.tiles[0].addGem(gemRed);
+    // gemRed.show();
+    // this.app.stage.addChild(gemRed.sprite);
   }
 
   update(): void {

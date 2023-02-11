@@ -9,15 +9,13 @@ export class Board {
   constructor(columns: number, rows: number) {
     this.columns = columns;
     this.rows = rows;
-    this.tiles = this.createTiles();
+    this.tiles = []
   }
 
-  createTiles(): Tile[] {
-    const tileTexture = PIXI.Texture.from("/img/tile.png");
-    const tiles = new Array(this.columns * this.rows)
+  createTiles(tileTexture: PIXI.Texture): void {
+    this.tiles = new Array(this.columns * this.rows)
       .fill(null)
       .map((_, i) => new Tile(i, tileTexture));
-    return tiles;
   }
 
   updateTiles(width: number, height: number): void {

@@ -8,9 +8,10 @@ test("Game instance is properly initialized", () => {
   expect(game.bindDragEnd).toBeDefined();
   expect(game.bindDragMove).toBeDefined();
   expect(game.bindResize).toBeDefined();
+  expect(game.board).toBeDefined();
+  expect(game.assets).toBeDefined();
   expect(game.dragTarget).toBeUndefined();
   expect(game.resizeElement).toBeUndefined();
-  expect(game.board).toBeUndefined();
 });
 
 describe("Game initialization", () => {

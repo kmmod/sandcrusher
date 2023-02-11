@@ -5,6 +5,9 @@ import { Tile } from "../../src/lib/tile";
 
 describe("Board is properly created", () => {
   const board = new Board(10, 10);
+  const tile = PIXI.Texture.from("/img/tile.png");
+  board.createTiles(tile);
+
   test("Board accepts width and height", () => {
     expect(board.columns).toBe(10);
     expect(board.rows).toBe(10);
@@ -32,6 +35,9 @@ describe("Board is properly created", () => {
 
 describe("Board is properly updated", () => {
   const board = new Board(10, 10);
+  const tile = PIXI.Texture.from("/img/tile.png");
+  board.createTiles(tile);
+
   const width = 1000;
   const height = 1000;
   const textureSize = new PIXI.Point(256, 256);
