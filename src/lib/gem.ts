@@ -6,8 +6,8 @@ export enum GemType {
   Red = "red",
   Blue = "blue",
   Green = "green",
-  Purple = "purple",
   Yellow = "yellow",
+  Purple = "purple",
 }
 
 export class Gem {

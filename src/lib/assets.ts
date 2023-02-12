@@ -6,7 +6,7 @@ export class Assets {
 
   constructor() {
     this.tiles = {};
-    this.gems = {}
+    this.gems = {};
   }
 
   async loadTileAssets(): Promise<void> {

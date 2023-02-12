@@ -39,6 +39,10 @@ export class Tile {
     this.gem.sprite.position = this.sprite.position;
   }
 
+  removeGem(): void {
+    this.gem = undefined;
+  }
+
   show(): void {
     this.sprite.alpha = 0;
     const delay = Math.random() * 500;

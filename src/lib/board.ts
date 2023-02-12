@@ -9,7 +9,7 @@ export class Board {
   constructor(columns: number, rows: number) {
     this.columns = columns;
     this.rows = rows;
-    this.tiles = []
+    this.tiles = [];
   }
 
   createTiles(tileTexture: PIXI.Texture): void {
