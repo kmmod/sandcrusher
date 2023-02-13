@@ -69,7 +69,7 @@ export class Game {
     await this.assets.loadTileAssets();
     this.createBoard();
     await Promise.all([this.assets.loadGemAssets(), timer(1000)]);
-    this.createGems();
+    this.addGems(15);
     this.createInteractions();
   }
 
@@ -89,20 +89,24 @@ export class Game {
     this.resize();
   }
 
-  createGems(): void {
-    const randomTiles = randomItems(this.board.getEmptyTiles(), 15);
-    const gemCount = 4;
+  addGems(count: number): void {
+    const randomTiles = randomItems(this.board.getEmptyTiles(), count);
 
     randomTiles.forEach((tile: Tile) => {
-      const randomType = Math.floor(Math.random() * gemCount);
-      const gemType = Object.values(GemType)[randomType];
-      const gemTexture = this.assets.getGemTexture(gemType);
-      const newGem = new Gem(gemType, gemTexture);
+      const newGem = this.randomGem();
       tile.addGem(newGem);
 
       newGem.show();
       this.app.stage.addChild(newGem.sprite);
     });
+  }
+
+  randomGem(): Gem {
+    const gemCount = 4;
+    const randomType = Math.floor(Math.random() * gemCount);
+    const gemType = Object.values(GemType)[randomType];
+    const gemTexture = this.assets.getGemTexture(gemType);
+    return new Gem(gemType, gemTexture);
   }
 
   createInteractions(): void {
@@ -115,12 +119,10 @@ export class Game {
     this.currentSetTile = tile;
     this.dragTarget = tile.gem.sprite;
     this.app.stage.on("pointermove", this.bindDragMove);
-    console.log(tile);
   }
 
   pointerOver(tile: Tile): void {
     this.currentHoverTile = tile;
-    console.log(tile);
   }
 
   update(): void {
@@ -144,8 +146,9 @@ export class Game {
       } else if (this.currentHoverTile) {
         this.currentHoverTile.addGem(this.currentSetTile.gem);
         this.currentSetTile.removeGem();
+        this.addGems(3);
       } else {
-        console.warn("Not valid interaction")
+        console.warn("Not valid interaction");
       }
     }
 
