@@ -16,6 +16,7 @@
   "devDependencies": {
     "@types/jsdom": "^21.1.0",
     "@types/pixi.js": "^5.0.0",
+    "@vitest/coverage-c8": "^0.28.5",
     "autoprefixer": "^10.4.13",
     "jest-canvas-mock": "^2.4.0",
     "jsdom": "^21.1.0",

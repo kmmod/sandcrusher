@@ -4,7 +4,7 @@ import { Assets } from "./assets";
 import { Board } from "./board";
 import { Gem, GemType } from "./gem";
 import { Tile } from "./tile";
-import { timer } from "./utils";
+import { randomItems, timer } from "./utils";
 
 export class Game {
   app: PIXI.Application<PIXI.ICanvas>;
@@ -90,24 +90,16 @@ export class Game {
   }
 
   createGems(): void {
-    for (let i = 0; i < 25; i++) {
+    const randomTiles = randomItems(this.board.tiles, 15);
+    randomTiles.forEach((tile: Tile) => {
       const randomType = Math.floor(Math.random() * 4);
       const gemType = Object.values(GemType)[randomType];
-
-      const randomTile = Math.floor(Math.random() * this.board.tiles.length);
-
       const newGem = new Gem(gemType, this.assets.getGemTexture(gemType));
-      if (this.board.tiles[randomTile].gem) {
-        continue;
-      }
-      this.board.tiles[randomTile].addGem(newGem);
+      tile.addGem(newGem);
+
       newGem.show();
       this.app.stage.addChild(newGem.sprite);
-    }
-    // const gemRed = new Gem(GemType.Red, this.assets.getGemTexture(GemType.Red));
-    // this.board.tiles[0].addGem(gemRed);
-    // gemRed.show();
-    // this.app.stage.addChild(gemRed.sprite);
+    });
   }
 
   createInteractions(): void {
