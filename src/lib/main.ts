@@ -67,13 +67,18 @@ export class Game {
 
   async init(): Promise<void> {
     await this.assets.loadTileAssets();
-    this.createBoard();
+    this.createTiles();
     await Promise.all([this.assets.loadGemAssets(), timer(1000)]);
     this.addGems(15);
-    this.createInteractions();
+    this.addStageInteractions();
   }
 
-  createBoard(): void {
+  addStageInteractions(): void {
+    this.app.stage.on("pointerup", this.bindDragEnd);
+    this.app.stage.on("pointerupoutside", this.bindDragEnd);
+  }
+
+  createTiles(): void {
     const tileTexture = this.assets.getTileTexture("tile");
     this.board.createTiles(tileTexture);
 
@@ -107,11 +112,6 @@ export class Game {
     const gemType = Object.values(GemType)[randomType];
     const gemTexture = this.assets.getGemTexture(gemType);
     return new Gem(gemType, gemTexture);
-  }
-
-  createInteractions(): void {
-    this.app.stage.on("pointerup", this.bindDragEnd);
-    this.app.stage.on("pointerupoutside", this.bindDragEnd);
   }
 
   pointerDown(tile: Tile): void {
