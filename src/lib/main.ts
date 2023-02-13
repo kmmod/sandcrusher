@@ -90,11 +90,14 @@ export class Game {
   }
 
   createGems(): void {
-    const randomTiles = randomItems(this.board.tiles, 15);
+    const randomTiles = randomItems(this.board.getEmptyTiles(), 15);
+    const gemCount = 4;
+
     randomTiles.forEach((tile: Tile) => {
-      const randomType = Math.floor(Math.random() * 4);
+      const randomType = Math.floor(Math.random() * gemCount);
       const gemType = Object.values(GemType)[randomType];
-      const newGem = new Gem(gemType, this.assets.getGemTexture(gemType));
+      const gemTexture = this.assets.getGemTexture(gemType);
+      const newGem = new Gem(gemType, gemTexture);
       tile.addGem(newGem);
 
       newGem.show();
@@ -131,24 +134,21 @@ export class Game {
 
   onDragEnd(): void {
     this.app.stage.off("pointermove", this.bindDragMove);
-    if (
-      this.dragTarget &&
-      this.currentSetTile &&
-      this.currentHoverTile &&
-      this.currentHoverTile.gem === undefined
-    ) {
-      this.currentHoverTile.addGem(this.currentSetTile!.gem!);
-      this.currentSetTile!.removeGem();
-    } else if (
-      this.dragTarget &&
-      this.currentHoverTile &&
-      this.currentHoverTile.gem
-    ) {
-      this.dragTarget.position.set(
-        this.currentSetTile!.sprite.position.x,
-        this.currentSetTile!.sprite.position.y
-      );
+
+    if (this.dragTarget && this.currentSetTile?.gem) {
+      if (this.currentHoverTile?.gem) {
+        this.dragTarget.position.set(
+          this.currentSetTile.sprite.position.x,
+          this.currentSetTile.sprite.position.y
+        );
+      } else if (this.currentHoverTile) {
+        this.currentHoverTile.addGem(this.currentSetTile.gem);
+        this.currentSetTile.removeGem();
+      } else {
+        console.warn("Not valid interaction")
+      }
     }
+
     this.currentSetTile = undefined;
     this.dragTarget = undefined;
   }

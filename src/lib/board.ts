@@ -33,4 +33,8 @@ export class Board {
   getTiles(): Tile[] {
     return this.tiles;
   }
+
+  getEmptyTiles(): Tile[] {
+    return this.tiles.filter((tile) => tile.gem === undefined);
+  }
 }
