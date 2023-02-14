@@ -62,7 +62,7 @@ export class Game {
     }
 
     const size = this.app.renderer.width;
-    this.board.updateTiles(size, size);
+    this.board.resizeTiles(size, size);
   }
 
   async init(): Promise<void> {

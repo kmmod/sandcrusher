@@ -18,7 +18,7 @@ export class Board {
       .map((_, i) => new Tile(i, tileTexture));
   }
 
-  updateTiles(width: number, height: number): void {
+  resizeTiles(width: number, height: number): void {
     const stepX = width / this.columns;
     const stepY = height / this.rows;
 
@@ -36,5 +36,13 @@ export class Board {
 
   getEmptyTiles(): Tile[] {
     return this.tiles.filter((tile) => tile.gem === undefined);
+  }
+
+  checkMatches(tile: Tile): Tile[] {
+    // Returns array of tiles for removal if there is a match
+    // Otherwise returns empty array
+    const matches: Tile[] = [];
+
+    return matches;
   }
 }
