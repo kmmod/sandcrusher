@@ -100,9 +100,31 @@ export class Game {
     randomTiles.forEach((tile: Tile) => {
       const newGem = this.randomGem();
       tile.addGem(newGem);
+      this.onGemAdded(tile);
 
       newGem.show();
       this.app.stage.addChild(newGem.sprite);
+    });
+  }
+
+  removeGems(tiles: Tile[]): void {
+    tiles.forEach((tile) => {
+      const gem = tile.gem;
+      if (!gem) return;
+
+      tile.removeGem();
+      this.app.stage.removeChild(gem.sprite);
+    });
+  }
+
+  onGemAdded(tile: Tile): void {
+    const tiles = this.board.getMatches(tile);
+
+    tiles.forEach((tile: Tile) => {
+      if (!tile.gem) return;
+      const gem: Gem = tile.gem;
+      tile.removeGem();
+      this.app.stage.removeChild(gem.sprite);
     });
   }
 
@@ -146,6 +168,7 @@ export class Game {
       } else if (this.currentHoverTile) {
         this.currentHoverTile.addGem(this.currentSetTile.gem);
         this.currentSetTile.removeGem();
+        this.onGemAdded(this.currentHoverTile);
         this.addGems(3);
       } else {
         console.warn("Not valid interaction");

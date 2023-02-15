@@ -20,27 +20,27 @@
         <h1><a href="index.html">All files</a> gem.ts</h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
-            <span class="strong">58.06% </span>
+            <span class="strong">90.32% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">18/31</span>
+            <span class="fraction">28/31</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">50% </span>
+            <span class="strong">100% </span>
             <span class="quiet">Branches</span>
-            <span class="fraction">1/2</span>
+            <span class="fraction">5/5</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
+            <span class="strong">80% </span>
             <span class="quiet">Functions</span>
-            <span class="fraction">0/5</span>
+            <span class="fraction">4/5</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">58.06% </span>
+            <span class="strong">90.32% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">18/31</span>
+            <span class="fraction">28/31</span>
           </div>
         </div>
         <p class="quiet">
@@ -54,7 +54,7 @@
           </div>
         </template>
       </div>
-      <div class="status-line medium"></div>
+      <div class="status-line high"></div>
       <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -101,28 +101,28 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as PIXI from "pixi.js";
 import * as TWEEDLE from "tweedle.js";
 import { Tile } from "./tile";
 &nbsp;
-export enum <span class="fstat-no" title="function not covered" >GemType {</span>
+export enum GemType {
   Red = "red",
   Blue = "blue",
   Green = "green",
@@ -131,24 +131,24 @@ export enum <span class="fstat-no" title="function not covered" >GemType {</span
 }
 &nbsp;
 export class Gem {
-<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >  sprite: PIXI.Sprite;</span></span>
-<span class="cstat-no" title="statement not covered" >  value: number;</span>
-<span class="cstat-no" title="statement not covered" >  type: GemType;</span>
-<span class="cstat-no" title="statement not covered" >  tile: Tile | undefined;</span>
+  sprite: PIXI.Sprite;
+  value: number;
+  type: GemType;
+  tile: Tile | undefined;
 &nbsp;
-<span class="fstat-no" title="function not covered" >  constructor(type: GemType, texture: PIXI.Texture) {</span>
-<span class="cstat-no" title="statement not covered" >    this.sprite = new PIXI.Sprite(texture);</span>
-<span class="cstat-no" title="statement not covered" >    this.sprite.anchor.set(0.5);</span>
-<span class="cstat-no" title="statement not covered" >    this.type = type;</span>
-<span class="cstat-no" title="statement not covered" >    this.value = 1;</span>
-<span class="cstat-no" title="statement not covered" >    this.tile = undefined;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  constructor(type: GemType, texture: PIXI.Texture) {
+    this.sprite = new PIXI.Sprite(texture);
+    this.sprite.anchor.set(0.5);
+    this.type = type;
+    this.value = 1;
+    this.tile = undefined;
+  }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  show(): void {</span>
 <span class="cstat-no" title="statement not covered" >    this.sprite.alpha = 0;</span>
 <span class="cstat-no" title="statement not covered" >    new TWEEDLE.Tween(this.sprite).to({ alpha: 1.0 }, 500).start();</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >}</span></span>
+}
 &nbsp;</pre></td></tr></table></pre>
 
       <div class="push"></div>
@@ -163,7 +163,7 @@ export class Gem {
         rel="noopener noreferrer"
         >istanbul</a
       >
-      at 2023-02-13T22:46:51.630Z
+      at 2023-02-15T00:29:20.320Z
     </div>
     <script src="prettify.js"></script>
     <script>

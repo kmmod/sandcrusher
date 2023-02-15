@@ -61,7 +61,7 @@ describe("Board tiles are properly resized", () => {
   });
 });
 
-describe("Board return tiles properly", () => {
+describe("Board returns tiles properly", () => {
   const board = new Board(10, 10);
   const tile = PIXI.Texture.from("/img/tile.png");
   const gemTexture = PIXI.Texture.from("/img/gem.png");
@@ -86,29 +86,34 @@ describe("Matches are properly checked", () => {
   const board = new Board(10, 10);
   const tile = PIXI.Texture.from("/img/tile.png");
   const gemTexture = PIXI.Texture.from("/img/gem.png");
-  const gem = new Gem(GemType.Red, gemTexture);
+  const gemRed = new Gem(GemType.Red, gemTexture);
+  const gemGreen = new Gem(GemType.Green, gemTexture);
   board.createTiles(tile);
 
   test("Returns empty array if there is no match", () => {
-    const matches = board.checkMatches(board.tiles[0]);
+    const matches = board.getMatches(board.tiles[0]);
     expect(matches).toBeInstanceOf(Array);
     expect(matches.length).toBe(0);
   });
 
   test("Returns empty array if match is incomplete", () => {
-    board.tiles[0].addGem(gem);
-    board.tiles[1].addGem(gem);
-    board.tiles[10].addGem(gem);
-    const matches = board.checkMatches(board.tiles[0]);
+    // [ R, R ]
+    // [ R, . ]
+    board.tiles[0].addGem(gemRed);
+    board.tiles[1].addGem(gemRed);
+    board.tiles[10].addGem(gemRed);
+    const matches = board.getMatches(board.tiles[0]);
     expect(matches.length).toBe(0);
   });
 
   test("Returns tiles array if match is complete", () => {
-    board.tiles[0].addGem(gem);
-    board.tiles[1].addGem(gem);
-    board.tiles[10].addGem(gem);
-    board.tiles[11].addGem(gem);
-    const matches = board.checkMatches(board.tiles[0]);
+    // [ R, R ]
+    // [ R, R ]
+    board.tiles[0].addGem(gemRed);
+    board.tiles[1].addGem(gemRed);
+    board.tiles[10].addGem(gemRed);
+    board.tiles[11].addGem(gemRed);
+    const matches = board.getMatches(board.tiles[0]);
     expect(matches.length).toBe(4);
     expect(matches).toEqual(
       expect.arrayContaining([
@@ -118,5 +123,26 @@ describe("Matches are properly checked", () => {
         board.tiles[11],
       ])
     );
+  });
+
+  test("Sliding window returns gems of same type only", () => {
+    // [ R, R, R, R ]
+    // [ G, R, R, R ]
+    board.tiles[0].addGem(gemRed);
+    board.tiles[1].addGem(gemRed);
+    board.tiles[2].addGem(gemRed);
+    board.tiles[3].addGem(gemRed);
+    board.tiles[10].addGem(gemGreen);
+    board.tiles[11].addGem(gemRed);
+    board.tiles[12].addGem(gemRed);
+    board.tiles[13].addGem(gemRed);
+
+    const matches0 = board.getMatches(board.tiles[0]);
+    const matches1 = board.getMatches(board.tiles[1]);
+    const matches2 = board.getMatches(board.tiles[2]);
+
+    expect(matches0.length).toBe(0);
+    expect(matches1.length).toBe(4);
+    expect(matches2.length).toBe(6);
   });
 });

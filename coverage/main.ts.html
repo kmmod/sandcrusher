@@ -20,9 +20,9 @@
         <h1><a href="index.html">All files</a> main.ts</h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
-            <span class="strong">50.58% </span>
+            <span class="strong">54.32% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">86/170</span>
+            <span class="fraction">88/162</span>
           </div>
 
           <div class="fl pad1y space-right2">
@@ -32,15 +32,15 @@
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">31.57% </span>
+            <span class="strong">30% </span>
             <span class="quiet">Functions</span>
-            <span class="fraction">6/19</span>
+            <span class="fraction">6/20</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">50.58% </span>
+            <span class="strong">54.32% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">86/170</span>
+            <span class="fraction">88/162</span>
           </div>
         </div>
         <p class="quiet">
@@ -218,15 +218,7 @@
 <a name='L160'></a><a href='#L160'>160</a>
 <a name='L161'></a><a href='#L161'>161</a>
 <a name='L162'></a><a href='#L162'>162</a>
-<a name='L163'></a><a href='#L163'>163</a>
-<a name='L164'></a><a href='#L164'>164</a>
-<a name='L165'></a><a href='#L165'>165</a>
-<a name='L166'></a><a href='#L166'>166</a>
-<a name='L167'></a><a href='#L167'>167</a>
-<a name='L168'></a><a href='#L168'>168</a>
-<a name='L169'></a><a href='#L169'>169</a>
-<a name='L170'></a><a href='#L170'>170</a>
-<a name='L171'></a><a href='#L171'>171</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L163'></a><a href='#L163'>163</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -305,6 +297,11 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -328,23 +325,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -358,6 +338,12 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -369,8 +355,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -402,7 +386,7 @@ import { Assets } from "./assets";
 import { Board } from "./board";
 import { Gem, GemType } from "./gem";
 import { Tile } from "./tile";
-import { timer } from "./utils";
+import { randomItems, timer } from "./utils";
 &nbsp;
 export class Game {
   app: PIXI.Application&lt;PIXI.ICanvas&gt;;
@@ -460,18 +444,23 @@ export class Game {
     }
 &nbsp;
     const size = this.app.renderer.width;
-    this.board.updateTiles(size, size);
+    this.board.resizeTiles(size, size);
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async init(): Promise&lt;void&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    await this.assets.loadTileAssets();</span>
-<span class="cstat-no" title="statement not covered" >    this.createBoard();</span>
+<span class="cstat-no" title="statement not covered" >    this.createTiles();</span>
 <span class="cstat-no" title="statement not covered" >    await Promise.all([this.assets.loadGemAssets(), timer(1000)]);</span>
-<span class="cstat-no" title="statement not covered" >    this.createGems();</span>
-<span class="cstat-no" title="statement not covered" >    this.createInteractions();</span>
+<span class="cstat-no" title="statement not covered" >    this.addGems(15);</span>
+<span class="cstat-no" title="statement not covered" >    this.addStageInteractions();</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
-<span class="fstat-no" title="function not covered" >  createBoard(): void {</span>
+<span class="fstat-no" title="function not covered" >  addStageInteractions(): void {</span>
+<span class="cstat-no" title="statement not covered" >    this.app.stage.on("pointerup", this.bindDragEnd);</span>
+<span class="cstat-no" title="statement not covered" >    this.app.stage.on("pointerupoutside", this.bindDragEnd);</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+&nbsp;
+<span class="fstat-no" title="function not covered" >  createTiles(): void {</span>
 <span class="cstat-no" title="statement not covered" >    const tileTexture = this.assets.getTileTexture("tile");</span>
 <span class="cstat-no" title="statement not covered" >    this.board.createTiles(tileTexture);</span>
 <span class="cstat-no" title="statement not covered" ></span>
@@ -487,33 +476,24 @@ export class Game {
 <span class="cstat-no" title="statement not covered" >    this.resize();</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
-<span class="fstat-no" title="function not covered" >  createGems(): void {</span>
-<span class="cstat-no" title="statement not covered" >    // get 10 random indicies for the board tiles</span>
+<span class="fstat-no" title="function not covered" >  addGems(count: number): void {</span>
+<span class="cstat-no" title="statement not covered" >    const randomTiles = randomItems(this.board.getEmptyTiles(), count);</span>
 <span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    randomTiles.forEach((tile: Tile) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      const newGem = this.randomGem();</span>
+<span class="cstat-no" title="statement not covered" >      tile.addGem(newGem);</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    for (let i = 0; i &lt; 25; i++) {</span>
-<span class="cstat-no" title="statement not covered" >      const randomType = Math.floor(Math.random() * 4);</span>
-<span class="cstat-no" title="statement not covered" >      const gemType = Object.values(GemType)[randomType];</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >      const randomTile = Math.floor(Math.random() * this.board.tiles.length);</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >      const newGem = new Gem(gemType, this.assets.getGemTexture(gemType));</span>
-<span class="cstat-no" title="statement not covered" >      if (this.board.tiles[randomTile].gem) {</span>
-<span class="cstat-no" title="statement not covered" >        continue;</span>
-<span class="cstat-no" title="statement not covered" >      }</span>
-<span class="cstat-no" title="statement not covered" >      this.board.tiles[randomTile].addGem(newGem);</span>
 <span class="cstat-no" title="statement not covered" >      newGem.show();</span>
 <span class="cstat-no" title="statement not covered" >      this.app.stage.addChild(newGem.sprite);</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >    // const gemRed = new Gem(GemType.Red, this.assets.getGemTexture(GemType.Red));</span>
-<span class="cstat-no" title="statement not covered" >    // this.board.tiles[0].addGem(gemRed);</span>
-<span class="cstat-no" title="statement not covered" >    // gemRed.show();</span>
-<span class="cstat-no" title="statement not covered" >    // this.app.stage.addChild(gemRed.sprite);</span>
+<span class="cstat-no" title="statement not covered" >    });</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
-<span class="fstat-no" title="function not covered" >  createInteractions(): void {</span>
-<span class="cstat-no" title="statement not covered" >    this.app.stage.on("pointerup", this.bindDragEnd);</span>
-<span class="cstat-no" title="statement not covered" >    this.app.stage.on("pointerupoutside", this.bindDragEnd);</span>
+<span class="fstat-no" title="function not covered" >  randomGem(): Gem {</span>
+<span class="cstat-no" title="statement not covered" >    const gemCount = 4;</span>
+<span class="cstat-no" title="statement not covered" >    const randomType = Math.floor(Math.random() * gemCount);</span>
+<span class="cstat-no" title="statement not covered" >    const gemType = Object.values(GemType)[randomType];</span>
+<span class="cstat-no" title="statement not covered" >    const gemTexture = this.assets.getGemTexture(gemType);</span>
+<span class="cstat-no" title="statement not covered" >    return new Gem(gemType, gemTexture);</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
 <span class="fstat-no" title="function not covered" >  pointerDown(tile: Tile): void {</span>
@@ -521,12 +501,10 @@ export class Game {
 <span class="cstat-no" title="statement not covered" >    this.currentSetTile = tile;</span>
 <span class="cstat-no" title="statement not covered" >    this.dragTarget = tile.gem.sprite;</span>
 <span class="cstat-no" title="statement not covered" >    this.app.stage.on("pointermove", this.bindDragMove);</span>
-<span class="cstat-no" title="statement not covered" >    console.log(tile);</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
 <span class="fstat-no" title="function not covered" >  pointerOver(tile: Tile): void {</span>
 <span class="cstat-no" title="statement not covered" >    this.currentHoverTile = tile;</span>
-<span class="cstat-no" title="statement not covered" >    console.log(tile);</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
 <span class="fstat-no" title="function not covered" >  update(): void {</span>
@@ -540,24 +518,22 @@ export class Game {
 &nbsp;
 <span class="fstat-no" title="function not covered" >  onDragEnd(): void {</span>
 <span class="cstat-no" title="statement not covered" >    this.app.stage.off("pointermove", this.bindDragMove);</span>
-<span class="cstat-no" title="statement not covered" >    if (</span>
-<span class="cstat-no" title="statement not covered" >      this.dragTarget &amp;&amp;</span>
-<span class="cstat-no" title="statement not covered" >      this.currentSetTile &amp;&amp;</span>
-<span class="cstat-no" title="statement not covered" >      this.currentHoverTile &amp;&amp;</span>
-<span class="cstat-no" title="statement not covered" >      this.currentHoverTile.gem === undefined</span>
-<span class="cstat-no" title="statement not covered" >    ) {</span>
-<span class="cstat-no" title="statement not covered" >      this.currentHoverTile.addGem(this.currentSetTile!.gem!);</span>
-<span class="cstat-no" title="statement not covered" >      this.currentSetTile!.removeGem();</span>
-<span class="cstat-no" title="statement not covered" >    } else if (</span>
-<span class="cstat-no" title="statement not covered" >      this.dragTarget &amp;&amp;</span>
-<span class="cstat-no" title="statement not covered" >      this.currentHoverTile &amp;&amp;</span>
-<span class="cstat-no" title="statement not covered" >      this.currentHoverTile.gem</span>
-<span class="cstat-no" title="statement not covered" >    ) {</span>
-<span class="cstat-no" title="statement not covered" >      this.dragTarget.position.set(</span>
-<span class="cstat-no" title="statement not covered" >        this.currentSetTile!.sprite.position.x,</span>
-<span class="cstat-no" title="statement not covered" >        this.currentSetTile!.sprite.position.y</span>
-<span class="cstat-no" title="statement not covered" >      );</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    if (this.dragTarget &amp;&amp; this.currentSetTile?.gem) {</span>
+<span class="cstat-no" title="statement not covered" >      if (this.currentHoverTile?.gem) {</span>
+<span class="cstat-no" title="statement not covered" >        this.dragTarget.position.set(</span>
+<span class="cstat-no" title="statement not covered" >          this.currentSetTile.sprite.position.x,</span>
+<span class="cstat-no" title="statement not covered" >          this.currentSetTile.sprite.position.y</span>
+<span class="cstat-no" title="statement not covered" >        );</span>
+<span class="cstat-no" title="statement not covered" >      } else if (this.currentHoverTile) {</span>
+<span class="cstat-no" title="statement not covered" >        this.currentHoverTile.addGem(this.currentSetTile.gem);</span>
+<span class="cstat-no" title="statement not covered" >        this.currentSetTile.removeGem();</span>
+<span class="cstat-no" title="statement not covered" >        this.addGems(3);</span>
+<span class="cstat-no" title="statement not covered" >      } else {</span>
+<span class="cstat-no" title="statement not covered" >        console.warn("Not valid interaction");</span>
+<span class="cstat-no" title="statement not covered" >      }</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    this.currentSetTile = undefined;</span>
 <span class="cstat-no" title="statement not covered" >    this.dragTarget = undefined;</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
@@ -580,7 +556,7 @@ export class Game {
         rel="noopener noreferrer"
         >istanbul</a
       >
-      at 2023-02-13T22:46:51.630Z
+      at 2023-02-15T00:29:20.320Z
     </div>
     <script src="prettify.js"></script>
     <script>
