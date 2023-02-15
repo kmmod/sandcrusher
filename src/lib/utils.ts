@@ -1,7 +1,17 @@
+import * as PIXI from "pixi.js";
+
 export const timer = async (duration: number) => {
   return await new Promise((resolve) => setTimeout(resolve, duration));
 };
 
 export const randomItems = <T>(items: T[], count: number): T[] => {
   return [...items].sort(() => Math.random() - 0.5).slice(0, count);
+};
+
+export const lerpPosition = (
+  a: PIXI.Point,
+  b: PIXI.Point,
+  t: number
+): PIXI.Point => {
+  return new PIXI.Point(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
 };

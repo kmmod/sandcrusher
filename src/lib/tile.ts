@@ -33,10 +33,23 @@ export class Tile {
     return sprite;
   }
 
-  addGem(gem: Gem): void {
+  addGem(gem: Gem, instant: boolean): void {
     this.gem = gem;
     this.gem.sprite.scale.set(this.sprite.scale.x * 0.85);
-    this.gem.sprite.position = this.sprite.position;
+    if (instant) {
+      this.gem.sprite.position = this.sprite.position;
+    } else {
+      new TWEEDLE.Tween(this.gem.sprite)
+        .to({ x: this.sprite.x, y: this.sprite.y }, 100)
+        .start();
+    }
+  }
+
+  resetGemPosition(): void {
+    if (!this.gem) return;
+    new TWEEDLE.Tween(this.gem.sprite)
+      .to({ x: this.sprite.x, y: this.sprite.y }, 200)
+      .start();
   }
 
   removeGem(): void {

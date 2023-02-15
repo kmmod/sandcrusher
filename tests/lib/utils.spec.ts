@@ -1,5 +1,6 @@
+import * as PIXI from "pixi.js";
 import { describe, expect, test } from "vitest";
-import { randomItems, timer } from "../../src/lib/utils";
+import { lerpPosition, randomItems, timer } from "../../src/lib/utils";
 
 test("Timeout function properly works", async () => {
   let counter = 0;
@@ -24,5 +25,22 @@ describe("Random Items", () => {
   test("Returns the correct number of items", () => {
     const result = randomItems(items, 5);
     expect(result.length).toBe(5);
+  });
+});
+
+describe("Lerp Position over time", () => {
+  const pointA = new PIXI.Point(0, 0);
+  const pointB = new PIXI.Point(100, 100);
+
+  test("Returns the correct position at 0%", () => {
+    expect(lerpPosition(pointA, pointB, 0)).toEqual(pointA);
+  });
+
+  test("Returns the correct position at 50%", () => {
+    expect(lerpPosition(pointA, pointB, 0.5)).toEqual(new PIXI.Point(50, 50));
+  });
+
+  test("Returns the correct position at 100%", () => {
+    expect(lerpPosition(pointA, pointB, 1)).toEqual(pointB);
   });
 });

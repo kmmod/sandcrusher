@@ -4,31 +4,31 @@ import { Assets } from "./assets";
 import { Board } from "./board";
 import { Gem, GemType } from "./gem";
 import { Tile } from "./tile";
-import { randomItems, timer } from "./utils";
+import { lerpPosition, randomItems, timer } from "./utils";
 
 export class Game {
   app: PIXI.Application<PIXI.ICanvas>;
-  board: Board;
   assets: Assets;
-  bindDragEnd: () => void;
-  bindDragMove: (event: PIXI.FederatedMouseEvent) => void;
-  bindResize: () => void;
+  board: Board;
+  mousePosition: PIXI.Point;
   dragTarget: PIXI.Sprite | undefined;
   resizeElement: HTMLDivElement | undefined;
   currentSetTile: Tile | undefined;
   currentHoverTile: Tile | undefined;
+  bindResize: () => void;
+  bindDragEnd: () => void;
 
   constructor(columns: number, rows: number) {
     this.app = this.setPixiApp();
     this.assets = new Assets();
     this.board = new Board(columns, rows);
-    this.resizeElement = undefined;
+    this.mousePosition = new PIXI.Point(0, 0);
     this.dragTarget = undefined;
+    this.resizeElement = undefined;
     this.currentSetTile = undefined;
     this.currentHoverTile = undefined;
     this.bindResize = () => this.resize();
     this.bindDragEnd = () => this.onDragEnd();
-    this.bindDragMove = (event) => this.onDragMove(event);
   }
 
   setPixiApp(): PIXI.Application {
@@ -71,11 +71,16 @@ export class Game {
     await Promise.all([this.assets.loadGemAssets(), timer(1000)]);
     this.addGems(15);
     this.addStageInteractions();
+    this.update();
   }
 
   addStageInteractions(): void {
     this.app.stage.on("pointerup", this.bindDragEnd);
     this.app.stage.on("pointerupoutside", this.bindDragEnd);
+    this.app.stage.on("pointermove", (event: PIXI.FederatedMouseEvent) => {
+      this.mousePosition.x = event.global.x;
+      this.mousePosition.y = event.global.y;
+    });
   }
 
   createTiles(): void {
@@ -99,7 +104,7 @@ export class Game {
 
     randomTiles.forEach((tile: Tile) => {
       const newGem = this.randomGem();
-      tile.addGem(newGem);
+      tile.addGem(newGem, true);
       this.onGemAdded(tile);
 
       newGem.show();
@@ -140,7 +145,6 @@ export class Game {
     if (!tile.gem) return;
     this.currentSetTile = tile;
     this.dragTarget = tile.gem.sprite;
-    this.app.stage.on("pointermove", this.bindDragMove);
   }
 
   pointerOver(tile: Tile): void {
@@ -148,25 +152,25 @@ export class Game {
   }
 
   update(): void {
-    this.app.ticker.add(() => {});
-  }
+    this.app.ticker.add((delta) => {
+      if (this.dragTarget) {
+        const interpolatedPoint = lerpPosition(
+          this.dragTarget.position,
+          this.mousePosition,
+          delta * 0.5
+        );
 
-  onDragMove(event: PIXI.FederatedMouseEvent): void {
-    if (!this.dragTarget) return;
-    this.dragTarget.position.set(event.global.x, event.global.y);
+        this.dragTarget.position.set(interpolatedPoint.x, interpolatedPoint.y);
+      }
+    });
   }
 
   onDragEnd(): void {
-    this.app.stage.off("pointermove", this.bindDragMove);
-
     if (this.dragTarget && this.currentSetTile?.gem) {
       if (this.currentHoverTile?.gem) {
-        this.dragTarget.position.set(
-          this.currentSetTile.sprite.position.x,
-          this.currentSetTile.sprite.position.y
-        );
+        this.currentSetTile.resetGemPosition();
       } else if (this.currentHoverTile) {
-        this.currentHoverTile.addGem(this.currentSetTile.gem);
+        this.currentHoverTile.addGem(this.currentSetTile.gem, false);
         this.currentSetTile.removeGem();
         this.onGemAdded(this.currentHoverTile);
         this.addGems(3);

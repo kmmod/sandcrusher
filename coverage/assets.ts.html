@@ -20,27 +20,27 @@
         <h1><a href="index.html">All files</a> assets.ts</h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
-            <span class="strong">57.57% </span>
+            <span class="strong">100% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">19/33</span>
+            <span class="fraction">33/33</span>
           </div>
 
           <div class="fl pad1y space-right2">
             <span class="strong">100% </span>
             <span class="quiet">Branches</span>
-            <span class="fraction">3/3</span>
+            <span class="fraction">7/7</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">42.85% </span>
+            <span class="strong">100% </span>
             <span class="quiet">Functions</span>
-            <span class="fraction">3/7</span>
+            <span class="fraction">7/7</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">57.57% </span>
+            <span class="strong">100% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">19/33</span>
+            <span class="fraction">33/33</span>
           </div>
         </div>
         <p class="quiet">
@@ -54,7 +54,7 @@
           </div>
         </template>
       </div>
-      <div class="status-line medium"></div>
+      <div class="status-line high"></div>
       <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -93,35 +93,35 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as PIXI from "pixi.js";
 &nbsp;
 export class Assets {
@@ -133,27 +133,27 @@ export class Assets {
     this.gems = {};
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  async loadTileAssets(): Promise&lt;void&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    this.tiles.tile = await PIXI.Assets.load("/img/tile.png");</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  async loadTileAssets(): Promise&lt;void&gt; {
+    this.tiles.tile = await PIXI.Assets.load("/img/tile.png");
+  }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  async loadGemAssets(): Promise&lt;void&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    this.gems.red = await PIXI.Assets.load("/img/gem-red.png");</span>
-<span class="cstat-no" title="statement not covered" >    this.gems.blue = await PIXI.Assets.load("/img/gem-blue.png");</span>
-<span class="cstat-no" title="statement not covered" >    this.gems.green = await PIXI.Assets.load("/img/gem-green.png");</span>
-<span class="cstat-no" title="statement not covered" >    this.gems.purple = await PIXI.Assets.load("/img/gem-purple.png");</span>
-<span class="cstat-no" title="statement not covered" >    this.gems.yellow = await PIXI.Assets.load("/img/gem-yellow.png");</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  async loadGemAssets(): Promise&lt;void&gt; {
+    this.gems.red = await PIXI.Assets.load("/img/gem-red.png");
+    this.gems.blue = await PIXI.Assets.load("/img/gem-blue.png");
+    this.gems.green = await PIXI.Assets.load("/img/gem-green.png");
+    this.gems.purple = await PIXI.Assets.load("/img/gem-purple.png");
+    this.gems.yellow = await PIXI.Assets.load("/img/gem-yellow.png");
+  }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  getTileTexture(name: string): PIXI.Texture {</span>
-<span class="cstat-no" title="statement not covered" >    console.assert(this.tiles[name], `Texture ${name} not found`);</span>
-<span class="cstat-no" title="statement not covered" >    return this.tiles[name];</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  getTileTexture(name: string): PIXI.Texture {
+    console.assert(this.tiles[name], `Texture ${name} not found`);
+    return this.tiles[name];
+  }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  getGemTexture(name: string): PIXI.Texture {</span>
-<span class="cstat-no" title="statement not covered" >    console.assert(this.gems[name], `Texture ${name} not found`);</span>
-<span class="cstat-no" title="statement not covered" >    return this.gems[name];</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  getGemTexture(name: string): PIXI.Texture {
+    console.assert(this.gems[name], `Texture ${name} not found`);
+    return this.gems[name];
+  }
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -169,7 +169,7 @@ export class Assets {
         rel="noopener noreferrer"
         >istanbul</a
       >
-      at 2023-02-15T00:29:20.320Z
+      at 2023-02-15T20:53:10.373Z
     </div>
     <script src="prettify.js"></script>
     <script>
