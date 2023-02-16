@@ -10,8 +10,8 @@ export class Game {
   app: PIXI.Application<PIXI.ICanvas>;
   assets: Assets;
   board: Board;
-  mousePosition: PIXI.Point;
-  dragTarget: PIXI.Sprite | undefined;
+  inputPosition: PIXI.Point;
+  dragElement: PIXI.Sprite | undefined;
   resizeElement: HTMLDivElement | undefined;
   currentSetTile: Tile | undefined;
   currentHoverTile: Tile | undefined;
@@ -22,8 +22,8 @@ export class Game {
     this.app = this.setPixiApp();
     this.assets = new Assets();
     this.board = new Board(columns, rows);
-    this.mousePosition = new PIXI.Point(0, 0);
-    this.dragTarget = undefined;
+    this.inputPosition = new PIXI.Point(0, 0);
+    this.dragElement = undefined;
     this.resizeElement = undefined;
     this.currentSetTile = undefined;
     this.currentHoverTile = undefined;
@@ -78,8 +78,12 @@ export class Game {
     this.app.stage.on("pointerup", this.bindDragEnd);
     this.app.stage.on("pointerupoutside", this.bindDragEnd);
     this.app.stage.on("pointermove", (event: PIXI.FederatedMouseEvent) => {
-      this.mousePosition.x = event.global.x;
-      this.mousePosition.y = event.global.y;
+      this.inputPosition.x = event.global.x;
+      this.inputPosition.y = event.global.y;
+    });
+    this.app.stage.on("touchmove", (event: PIXI.FederatedPointerEvent) => {
+      this.inputPosition.x = event.global.x;
+      this.inputPosition.y = event.global.y;
     });
   }
 
@@ -91,7 +95,9 @@ export class Game {
 
     tiles.forEach((tile) => {
       tile.show();
-      tile.sprite.on("pointerdown", () => this.pointerDown(tile));
+      tile.sprite.on("pointerdown", (event: PIXI.FederatedPointerEvent) =>
+        this.pointerDown(event, tile)
+      );
       tile.sprite.on("pointerover", () => this.pointerOver(tile));
       this.app.stage.addChild(tile.sprite);
     });
@@ -141,10 +147,12 @@ export class Game {
     return new Gem(gemType, gemTexture);
   }
 
-  pointerDown(tile: Tile): void {
+  pointerDown(event: PIXI.FederatedPointerEvent, tile: Tile): void {
+    this.inputPosition.x = event.global.x;
+    this.inputPosition.y = event.global.y;
     if (!tile.gem) return;
     this.currentSetTile = tile;
-    this.dragTarget = tile.gem.sprite;
+    this.dragElement = tile.gem.sprite;
   }
 
   pointerOver(tile: Tile): void {
@@ -153,20 +161,20 @@ export class Game {
 
   update(): void {
     this.app.ticker.add((delta) => {
-      if (this.dragTarget) {
+      if (this.dragElement) {
         const interpolatedPoint = lerpPosition(
-          this.dragTarget.position,
-          this.mousePosition,
+          this.dragElement.position,
+          this.inputPosition,
           delta * 0.5
         );
 
-        this.dragTarget.position.set(interpolatedPoint.x, interpolatedPoint.y);
+        this.dragElement.position.set(interpolatedPoint.x, interpolatedPoint.y);
       }
     });
   }
 
   onDragEnd(): void {
-    if (this.dragTarget && this.currentSetTile?.gem) {
+    if (this.dragElement && this.currentSetTile?.gem) {
       if (this.currentHoverTile?.gem) {
         this.currentSetTile.resetGemPosition();
       } else if (this.currentHoverTile) {
@@ -180,7 +188,7 @@ export class Game {
     }
 
     this.currentSetTile = undefined;
-    this.dragTarget = undefined;
+    this.dragElement = undefined;
   }
 
   getView(): HTMLCanvasElement {
