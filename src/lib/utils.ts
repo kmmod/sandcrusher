@@ -5,6 +5,8 @@ export const timer = async (duration: number) => {
 };
 
 export const randomItems = <T>(items: T[], count: number): T[] => {
+  // TODO: it seems this randomize funcion may return not as random items as 
+  // one could wish for. Need to rethink this.
   return [...items].sort(() => Math.random() - 0.5).slice(0, count);
 };
 
