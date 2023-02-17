@@ -3,7 +3,7 @@ import { createSignal, createEffect, onCleanup, onMount } from "solid-js";
 import { Game } from "../lib/main";
 
 const GameScreen: Component = () => {
-  const game = new Game(10, 10);
+  const game = new Game(8, 8);
   let container: HTMLDivElement;
 
   onMount(() => {

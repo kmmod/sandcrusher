@@ -69,14 +69,19 @@ export class Game {
     await this.assets.loadTileAssets();
     this.createTiles();
     await Promise.all([this.assets.loadGemAssets(), timer(1000)]);
+    // TODO: Initial gem amount should be a percentage of the total tiles
+    // amount to avoid passing arbitrary values.
     this.addGems(15);
     this.addStageInteractions();
     this.update();
   }
 
+  // TODO: Think about moving this to separate class.
   addStageInteractions(): void {
     this.app.stage.on("pointerup", this.bindDragEnd);
     this.app.stage.on("pointerupoutside", this.bindDragEnd);
+    // TODO: Do we need both pointer and touch events? Should pointer events
+    // passed as FederatedPointerEvent be enough?
     this.app.stage.on("pointermove", (event: PIXI.FederatedMouseEvent) => {
       this.inputPosition.x = event.global.x;
       this.inputPosition.y = event.global.y;
@@ -87,6 +92,7 @@ export class Game {
     });
   }
 
+  // TODO: Think about moving this to the Board class
   createTiles(): void {
     const tileTexture = this.assets.getTileTexture("tile");
     this.board.createTiles(tileTexture);
@@ -105,6 +111,9 @@ export class Game {
     this.resize();
   }
 
+  // TODO: Think about moving this to the Board class - think about creating
+  // InteractionManager class or StageController class to move interaction
+  // logic to.
   addGems(count: number): void {
     const randomTiles = randomItems(this.board.getEmptyTiles(), count);
 
@@ -118,27 +127,54 @@ export class Game {
     });
   }
 
-  removeGems(tiles: Tile[]): void {
-    tiles.forEach((tile) => {
-      const gem = tile.gem;
-      if (!gem) return;
+  // TODO: Think about moving this to the Board class
+  // TODO: NOT USED LOL
+  // removeGems(tiles: Tile[]): void {
+  //   tiles.forEach((tile) => {
+  //     const gem = tile.gem;
+  //     if (!gem) return;
+  //
+  //     const deleteMe = (gem: PIXI.Sprite, _: any) => {
+  //       console.log(gem, _);
+  //     };
+  //
+  //     gem.destroy(deleteMe);
+  //     tile.removeGem();
+  //     // this.app.stage.removeChild(gem.sprite);
+  //   });
+  // }
 
-      tile.removeGem();
-      this.app.stage.removeChild(gem.sprite);
-    });
+  removeGemFromBoard(gem: PIXI.Sprite, _: any): void {
+    this.app.stage.removeChild(gem);
   }
 
+  // TODO: This could belong to interaction manager class.
   onGemAdded(tile: Tile): void {
     const tiles = this.board.getMatches(tile);
 
     tiles.forEach((tile: Tile) => {
       if (!tile.gem) return;
+
+      // const deleteMe = (gem: PIXI.Sprite, _: any) => {
+      //   console.log(gem, _);
+      // };
+
+      const deleteMe = (gem: PIXI.Sprite, _: any) =>
+        this.removeGemFromBoard(gem, _);
+
       const gem: Gem = tile.gem;
+
+      gem.destroy(deleteMe);
       tile.removeGem();
-      this.app.stage.removeChild(gem.sprite);
+      // this.app.stage.removeChild(gem.sprite);
     });
+
+    //   if (tiles.length === 0) {
+    //     this.addGems(3)
+    //   };
   }
 
+  // TODO: Think about moving this to the Gem class
   randomGem(): Gem {
     const gemCount = 4;
     const randomType = Math.floor(Math.random() * gemCount);
@@ -147,18 +183,25 @@ export class Game {
     return new Gem(gemType, gemTexture);
   }
 
+  // TODO: StageController class?
   pointerDown(event: PIXI.FederatedPointerEvent, tile: Tile): void {
+    // TODO: Input position assignment repeated in pointermove event.
+    // Should we move it to a separate method? Is there a way to simplify
+    // assigment - check PIXI docs for setting Point values.
     this.inputPosition.x = event.global.x;
     this.inputPosition.y = event.global.y;
     if (!tile.gem) return;
     this.currentSetTile = tile;
     this.dragElement = tile.gem.sprite;
+    // TODO: Set sprite Z index to the top.
   }
 
+  // TODO: StageController class?
   pointerOver(tile: Tile): void {
     this.currentHoverTile = tile;
   }
 
+  // TODO: StageController class?
   update(): void {
     this.app.ticker.add((delta) => {
       if (this.dragElement) {
@@ -173,6 +216,7 @@ export class Game {
     });
   }
 
+  // TODO: StageController class?
   onDragEnd(): void {
     if (this.dragElement && this.currentSetTile?.gem) {
       if (this.currentHoverTile?.gem) {
@@ -180,8 +224,12 @@ export class Game {
       } else if (this.currentHoverTile) {
         this.currentHoverTile.addGem(this.currentSetTile.gem, false);
         this.currentSetTile.removeGem();
+
+        const tiles = this.board.getMatches(this.currentHoverTile);
         this.onGemAdded(this.currentHoverTile);
-        this.addGems(3);
+        if (tiles.length === 0) {
+          this.addGems(3);
+        }
       } else {
         console.warn("Not valid interaction");
       }

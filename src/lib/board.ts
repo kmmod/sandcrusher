@@ -6,11 +6,13 @@ export class Board {
   columns: number;
   rows: number;
   tiles: Tile[];
+  nextGemsIds: number[];
 
   constructor(columns: number, rows: number) {
     this.columns = columns;
     this.rows = rows;
     this.tiles = [];
+    this.nextGemsIds = [];
   }
 
   createTiles(tileTexture: PIXI.Texture): void {
@@ -29,6 +31,15 @@ export class Board {
       tile.setScale(stepX / tile.sprite.texture.width);
       tile.setPosition(x, y);
     });
+  }
+
+  setPreviewGems(count: number): void {
+    // TODO: Implement setting amount of next gems and their types to visualize
+    // them on the board.
+    //
+    // - choose random tiles from the board
+    // - pick random gem type
+    // - set tile gemPreview to that gem type
   }
 
   getTiles(): Tile[] {

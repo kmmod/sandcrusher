@@ -11,6 +11,7 @@ export class Tile {
   bindPointerOver: () => void;
   bindPointerOut: () => void;
   gem: Gem | undefined;
+  gemPreview: undefined;
 
   constructor(id: number, texture: PIXI.Texture) {
     this.id = id;
@@ -23,6 +24,7 @@ export class Tile {
     this.sprite.on("pointerover", this.bindPointerOver);
     this.sprite.on("pointerout", this.bindPointerOut);
     this.gem = undefined;
+    this.gemPreview = undefined;
   }
 
   createSprite(texture: PIXI.Texture): PIXI.Sprite {
@@ -31,6 +33,10 @@ export class Tile {
     sprite.alpha = 0.5;
     sprite.interactive = true;
     return sprite;
+  }
+
+  addGemPreview(gem: Gem): void {
+    // TODO: Implement setting gem preview
   }
 
   addGem(gem: Gem, instant: boolean): void {
@@ -68,8 +74,8 @@ export class Tile {
   }
 
   onPointerOver(): void {
-    this.alphaTween.stop();
     this.alphaTween
+      .stop()
       .from({ alpha: this.sprite.alpha })
       .to({ alpha: this.hoverAlpha }, 200)
       .delay(0)
@@ -77,8 +83,8 @@ export class Tile {
   }
 
   onPointerOut(): void {
-    this.alphaTween.stop();
     this.alphaTween
+      .stop()
       .from({ alpha: this.sprite.alpha })
       .to({ alpha: this.idleAlpha }, 1000)
       .start();
