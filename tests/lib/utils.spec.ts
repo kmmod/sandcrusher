@@ -1,6 +1,11 @@
 import * as PIXI from "pixi.js";
 import { describe, expect, test } from "vitest";
-import { lerpPosition, randomItems, timer } from "../../src/lib/utils";
+import {
+  lerpPosition,
+  percentToAmount,
+  randomItems,
+  timer,
+} from "../../src/lib/utils";
 
 test("Timeout function properly works", async () => {
   let counter = 0;
@@ -42,5 +47,21 @@ describe("Lerp Position over time", () => {
 
   test("Returns the correct position at 100%", () => {
     expect(lerpPosition(pointA, pointB, 1)).toEqual(pointB);
+  });
+});
+
+describe("Percent to amount", () => {
+  const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+  test("Returns the correct amount at 0%", () => {
+    expect(percentToAmount(0, items)).toBe(0);
+  });
+
+  test("Returns the correct amount at 50%", () => {
+    expect(percentToAmount(0.5, items)).toBe(5);
+  });
+
+  test("Returns the correct amount at 100%", () => {
+    expect(percentToAmount(1, items)).toBe(10);
   });
 });

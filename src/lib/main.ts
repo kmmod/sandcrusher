@@ -4,7 +4,7 @@ import { Assets } from "./assets";
 import { Board } from "./board";
 import { Gem, GemType } from "./gem";
 import { Tile } from "./tile";
-import { lerpPosition, randomItems, timer } from "./utils";
+import { lerpPosition, percentToAmount, randomItems, timer } from "./utils";
 
 export class Game {
   app: PIXI.Application<PIXI.ICanvas>;
@@ -69,9 +69,8 @@ export class Game {
     await this.assets.loadTileAssets();
     this.createTiles();
     await Promise.all([this.assets.loadGemAssets(), timer(1000)]);
-    // TODO: Initial gem amount should be a percentage of the total tiles
-    // amount to avoid passing arbitrary values.
-    this.addGems(15);
+    const initialGemsCount = percentToAmount(0.2, this.board.getTiles());
+    this.addGems(initialGemsCount);
     this.addStageInteractions();
     this.update();
   }

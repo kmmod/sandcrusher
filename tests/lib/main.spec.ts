@@ -30,8 +30,11 @@ describe("Game initialization", () => {
     PIXI.Assets.load = vi.fn().mockResolvedValue(sprite);
 
     await game.init();
+    const initialGemAmount = game.board.getTiles().length * 0.2;
 
     expect(game.board.tiles.length).toBe(100);
-    expect(game.board.tiles.filter((tile) => tile.gem).length).toBe(15);
+    expect(game.board.tiles.filter((tile) => tile.gem).length).toBe(
+      initialGemAmount
+    );
   });
 });

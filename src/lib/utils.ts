@@ -17,3 +17,7 @@ export const lerpPosition = (
 ): PIXI.Point => {
   return new PIXI.Point(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
 };
+
+export const percentToAmount = <T>(percent: number, items: T[]): number => {
+  return Math.floor(items.length * percent);
+};
