@@ -1,13 +1,18 @@
 import * as PIXI from "pixi.js";
 
-export const timer = async (duration: number) => {
+export const waitForMs = async (duration: number) => {
   return await new Promise((resolve) => setTimeout(resolve, duration));
 };
 
 export const randomItems = <T>(items: T[], count: number): T[] => {
-  // TODO: it seems this randomize funcion may return not as random items as 
-  // one could wish for. Need to rethink this.
-  return [...items].sort(() => Math.random() - 0.5).slice(0, count);
+  // Using Schwartzian transform to randomize the array and then slice it to
+  // the desired count.
+  // https://en.wikipedia.org/wiki/Schwartzian_transform
+  const shuffled = items
+    .map((a) => ({ sort: Math.random(), value: a }))
+    .sort((a, b) => a.sort - b.sort)
+    .map((a) => a.value);
+  return shuffled.slice(0, count);
 };
 
 export const lerpPosition = (
@@ -18,6 +23,6 @@ export const lerpPosition = (
   return new PIXI.Point(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
 };
 
-export const percentToAmount = <T>(percent: number, items: T[]): number => {
+export const fractionToAmount = <T>(percent: number, items: T[]): number => {
   return Math.floor(items.length * percent);
 };

@@ -22,25 +22,25 @@
           <div class="fl pad1y space-right2">
             <span class="strong">100% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">17/17</span>
+            <span class="fraction">28/28</span>
           </div>
 
           <div class="fl pad1y space-right2">
             <span class="strong">100% </span>
             <span class="quiet">Branches</span>
-            <span class="fraction">8/8</span>
+            <span class="fraction">12/12</span>
           </div>
 
           <div class="fl pad1y space-right2">
             <span class="strong">100% </span>
             <span class="quiet">Functions</span>
-            <span class="fraction">6/6</span>
+            <span class="fraction">8/8</span>
           </div>
 
           <div class="fl pad1y space-right2">
             <span class="strong">100% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">17/17</span>
+            <span class="fraction">28/28</span>
           </div>
         </div>
         <p class="quiet">
@@ -73,15 +73,33 @@
 <a name='L15'></a><a href='#L15'>15</a>
 <a name='L16'></a><a href='#L16'>16</a>
 <a name='L17'></a><a href='#L17'>17</a>
-<a name='L18'></a><a href='#L18'>18</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -90,14 +108,25 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as PIXI from "pixi.js";
 &nbsp;
-export const timer = async (duration: number) =&gt; {
+export const waitForMs = async (duration: number) =&gt; {
   return await new Promise((resolve) =&gt; setTimeout(resolve, duration));
 };
 &nbsp;
 export const randomItems = &lt;T&gt;(items: T[], count: number): T[] =&gt; {
-  return [...items].sort(() =&gt; Math.random() - 0.5).slice(0, count);
+  // Using Schwartzian transform to randomize the array and then slice it to
+  // the desired count.
+  // https://en.wikipedia.org/wiki/Schwartzian_transform
+  const shuffled = items
+    .map((a) =&gt; ({ sort: Math.random(), value: a }))
+    .sort((a, b) =&gt; a.sort - b.sort)
+    .map((a) =&gt; a.value);
+  return shuffled.slice(0, count);
 };
 &nbsp;
 export const lerpPosition = (
@@ -106,6 +135,10 @@ export const lerpPosition = (
   t: number
 ): PIXI.Point =&gt; {
   return new PIXI.Point(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
+};
+&nbsp;
+export const fractionToAmount = &lt;T&gt;(percent: number, items: T[]): number =&gt; {
+  return Math.floor(items.length * percent);
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -121,7 +154,7 @@ export const lerpPosition = (
         rel="noopener noreferrer"
         >istanbul</a
       >
-      at 2023-02-15T20:53:10.373Z
+      at 2023-02-18T11:10:01.554Z
     </div>
     <script src="prettify.js"></script>
     <script>
