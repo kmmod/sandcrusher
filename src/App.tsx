@@ -8,7 +8,7 @@ const App: Component = () => {
 
   return (
     <div class="m-0">
-      <div class="absolute h-full w-full -z-10">
+      <div class="absolute h-full w-full -z-10 select-none">
         <img
           class="object-cover h-full w-full"
           src="/img/bg01.png"

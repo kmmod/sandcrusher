@@ -7,7 +7,7 @@ import { Interactions } from "./interactions";
 import { Tile } from "./tile";
 import { fractionToAmount, randomItems, waitForMs } from "./utils";
 
-enum Options {
+export enum Options {
   Columns = 8,
   Rows = 8,
   GemCount = 4,
@@ -76,12 +76,17 @@ export class Game {
       Options.InitGemsFraction,
       this.board.getTiles()
     );
-    this.addGems(initialGemsCount);
+    const randomTiles = randomItems(
+      this.board.getEmptyTiles(),
+      initialGemsCount
+    );
+    this.initGems(randomTiles);
+    this.board.setNextTiles(this.randomGems());
+    this.addGemsPreview(this.board.getNextTiles());
     this.interactions.initStageInteractions(this.app.stage);
     this.interactions.update(this.app);
   }
 
-  // TODO: Think about moving this to the Board class
   createTiles(): void {
     const tileTexture = this.assets.getTileTexture("tile");
     this.board.createTiles(tileTexture);
@@ -100,22 +105,51 @@ export class Game {
     this.resize();
   }
 
-  // TODO: Think about moving this to the Board class
-  addGems(count: number): void {
+  setPreviewGems(count: number): void {
     const randomTiles = randomItems(this.board.getEmptyTiles(), count);
+    // TODO: Implement setting amount of next gems and their types to visualize
+    // them on the board.
+    //
+    // - choose random tiles from the board
+    // - pick random gem type
+    // - set tile gemPreview to that gem type
+  }
 
-    randomTiles.forEach((tile: Tile) => {
+  initGems(tiles: Tile[]): void {
+    tiles.forEach((tile: Tile) => {
       const newGem = this.randomGem();
-      tile.addGem(newGem, true);
+      tile.addGem(newGem, false, true);
       const matches = this.board.getMatches(tile);
       this.removeGems(matches);
-
       newGem.show();
       this.app.stage.addChild(newGem.sprite);
     });
   }
-  //
-  // TODO: Think about moving this to the Gem class
+
+  addGems(tiles: Tile[]): void {
+    tiles.forEach((tile: Tile) => {
+      // const newGem = this.randomGem();
+      // tile.addGem(newGem, false, true);
+      tile.growGem();
+      const matches = this.board.getMatches(tile);
+      this.removeGems(matches);
+      // newGem.show();
+      // this.app.stage.addChild(newGem.sprite);
+    });
+  }
+
+  addGemsPreview(tiles: Tile[]): void {
+    tiles.forEach((tile: Tile) => {
+      this.app.stage.addChild(tile.gem?.sprite!);
+    });
+  }
+
+  randomGems(): Gem[] {
+    return new Array(Options.NewGemsPerTurn)
+      .fill(null)
+      .map(() => this.randomGem());
+  }
+
   randomGem(): Gem {
     const randomType = Math.floor(Math.random() * Options.GemCount);
     const gemType = Object.values(GemType)[randomType];
@@ -126,7 +160,11 @@ export class Game {
   onGemSet(tile: Tile): void {
     const matches = this.board.getMatches(tile);
     if (matches.length === 0) {
-      this.addGems(Options.NewGemsPerTurn);
+      const nextTiles = this.board.getNextTiles();
+      // if (nextTiles.length === 0) DEFEAT
+      this.addGems(nextTiles);
+      this.board.setNextTiles(this.randomGems());
+      this.addGemsPreview(this.board.getNextTiles());
     } else {
       this.removeGems(matches);
     }
@@ -138,10 +176,12 @@ export class Game {
 
   async removeGem(tile: Tile): Promise<void> {
     if (!tile.gem) return;
+    const sprite = tile.gem.sprite;
+    const fadeDuration = tile.gem.fadeDuration;
     tile.gem.hide();
-    await waitForMs(tile.gem.fadeDuration);
-    this.app.stage.removeChild(tile.gem.sprite);
     tile.removeGem();
+    await waitForMs(fadeDuration);
+    this.app.stage.removeChild(sprite);
   }
 
   getView(): HTMLCanvasElement {

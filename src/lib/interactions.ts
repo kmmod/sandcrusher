@@ -45,7 +45,7 @@ export class Interactions {
   onTileClicked(event: PIXI.FederatedPointerEvent, tile: Tile): void {
     this.inputPosition.x = event.global.x;
     this.inputPosition.y = event.global.y;
-    if (!tile.gem) return;
+    if (!tile.gem || tile.gem.preview) return;
     this.currentSetTile = tile;
     this.dragSprite = tile.gem.sprite;
     this.dragSprite.zIndex = 1000;
@@ -57,10 +57,13 @@ export class Interactions {
 
   onDragEnd(): void {
     if (this.dragSprite && this.currentSetTile?.gem) {
-      if (this.currentHoverTile?.gem) {
+      if (
+        this.currentHoverTile?.gem &&
+        this.currentHoverTile?.gem.preview === false
+      ) {
         this.currentSetTile.resetGemPosition();
       } else if (this.currentHoverTile) {
-        this.currentHoverTile.addGem(this.currentSetTile.gem, false);
+        this.currentHoverTile.addGem(this.currentSetTile.gem, false, false);
         this.currentSetTile.removeGem();
         this.onGemSet(this.currentHoverTile);
       } else {

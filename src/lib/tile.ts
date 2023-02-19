@@ -11,7 +11,6 @@ export class Tile {
   bindPointerOver: () => void;
   bindPointerOut: () => void;
   gem: Gem | undefined;
-  gemPreview: undefined;
 
   constructor(id: number, texture: PIXI.Texture) {
     this.id = id;
@@ -24,7 +23,6 @@ export class Tile {
     this.sprite.on("pointerover", this.bindPointerOver);
     this.sprite.on("pointerout", this.bindPointerOut);
     this.gem = undefined;
-    this.gemPreview = undefined;
   }
 
   createSprite(texture: PIXI.Texture): PIXI.Sprite {
@@ -35,13 +33,23 @@ export class Tile {
     return sprite;
   }
 
-  addGemPreview(gem: Gem): void {
-    // TODO: Implement setting gem preview
+  growGem(): void {
+    if (!this.gem) return;
+    this.gem.scaleMod = 1;
+    this.gem.preview = false;
+    this.gem.sprite.scale.set(this.gem.scaleMod * this.sprite.scale.x * 0.85);
   }
 
-  addGem(gem: Gem, instant: boolean): void {
+  addGem(gem: Gem, preview: boolean, instant: boolean): void {
+    if (this.gem) {
+      this.growGem();
+      return;
+    }
     this.gem = gem;
-    this.gem.sprite.scale.set(this.sprite.scale.x * 0.85);
+    if (preview) {
+      this.gem.setPreview();
+    }
+    this.gem.sprite.scale.set(this.gem.scaleMod * this.sprite.scale.x * 0.85);
     if (instant) {
       this.gem.sprite.position = this.sprite.position;
     } else {
@@ -92,7 +100,7 @@ export class Tile {
 
   setScale(scale: number): void {
     this.sprite.scale.set(scale);
-    if (this.gem) this.gem.sprite.scale.set(scale * 0.85);
+    if (this.gem) this.gem.sprite.scale.set(this.gem.scaleMod * scale * 0.85);
   }
 
   setPosition(x: number, y: number): void {

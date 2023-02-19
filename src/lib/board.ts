@@ -1,18 +1,20 @@
 import * as PIXI from "pixi.js";
-import { GemType } from "./gem";
+import { Gem, GemType } from "./gem";
+import { Options } from "./main";
 import { Tile } from "./tile";
+import { randomItems } from "./utils";
 
 export class Board {
   columns: number;
   rows: number;
   tiles: Tile[];
-  nextGemsIds: number[];
+  nextTiles: Tile[];
 
   constructor(columns: number, rows: number) {
     this.columns = columns;
     this.rows = rows;
     this.tiles = [];
-    this.nextGemsIds = [];
+    this.nextTiles = [];
   }
 
   createTiles(tileTexture: PIXI.Texture): void {
@@ -33,13 +35,19 @@ export class Board {
     });
   }
 
-  setPreviewGems(count: number): void {
-    // TODO: Implement setting amount of next gems and their types to visualize
-    // them on the board.
-    //
-    // - choose random tiles from the board
-    // - pick random gem type
-    // - set tile gemPreview to that gem type
+  setNextTiles(nextGems: Gem[]): void {
+    console.assert(
+      nextGems.length === Options.NewGemsPerTurn,
+      "Wrong amount of gems"
+    );
+    this.nextTiles = randomItems(this.getEmptyTiles(), Options.NewGemsPerTurn);
+    this.nextTiles.forEach((tile: Tile) =>
+      tile.addGem(nextGems.pop()!, true, true)
+    );
+  }
+
+  getNextTiles(): Tile[] {
+    return this.nextTiles;
   }
 
   getTiles(): Tile[] {
@@ -53,8 +61,6 @@ export class Board {
   getMatches(tile: Tile): Tile[] {
     // Returns array of tiles for removal if there is a match
     // Otherwise returns empty array
-
-    console.assert(tile.gem !== undefined, "Tile must have a gem");
     if (tile.gem === undefined) return [];
 
     const gemType = tile.gem.type;
