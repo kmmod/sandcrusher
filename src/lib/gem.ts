@@ -1,14 +1,7 @@
 import * as PIXI from "pixi.js";
 import * as TWEEDLE from "tweedle.js";
 import { Tile } from "./tile";
-
-export enum GemType {
-  Red = "red",
-  Blue = "blue",
-  Green = "green",
-  Yellow = "yellow",
-  Purple = "purple",
-}
+import { GemType } from "./types";
 
 export class Gem {
   sprite: PIXI.Sprite;

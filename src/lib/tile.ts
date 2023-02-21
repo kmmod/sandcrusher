@@ -33,31 +33,53 @@ export class Tile {
     return sprite;
   }
 
-  growGem(): void {
-    if (!this.gem) return;
-    this.gem.scaleMod = 1;
-    this.gem.preview = false;
-    this.gem.sprite.scale.set(this.gem.scaleMod * this.sprite.scale.x * 0.85);
+  addClickListener(
+    callback: (event: PIXI.FederatedPointerEvent) => void
+  ): void {
+    this.sprite.on("pointerdown", callback);
   }
 
-  addGem(gem: Gem, preview: boolean, instant: boolean): void {
-    if (this.gem) {
-      this.growGem();
-      return;
-    }
-    this.gem = gem;
-    if (preview) {
-      this.gem.setPreview();
-    }
-    this.gem.sprite.scale.set(this.gem.scaleMod * this.sprite.scale.x * 0.85);
-    if (instant) {
-      this.gem.sprite.position = this.sprite.position;
-    } else {
-      new TWEEDLE.Tween(this.gem.sprite)
-        .to({ x: this.sprite.x, y: this.sprite.y }, 100)
-        .start();
-    }
+  addHoverListener(callback: () => void): void {
+    this.sprite.on("pointerover", callback);
   }
+
+  // growGem(): void {
+  //   if (!this.gem) return;
+  //   this.gem.scaleMod = 1;
+  //   this.gem.preview = false;
+  //   this.gem.sprite.scale.set(this.gem.scaleMod * this.sprite.scale.x * 0.85);
+  // }
+  //
+  addGem(gem: Gem): void {
+    this.gem = gem;
+    this.gem.sprite.position = this.sprite.position;
+    this.gem.sprite.scale.set(this.sprite.scale.x * 0.85);
+  }
+
+  updateGemTransform() {
+    if (!this.gem) return;
+    this.gem.sprite.position = this.sprite.position;
+    this.gem.sprite.scale.set(this.sprite.scale.x * 0.85);
+  }
+
+  // addGemTmp(gem: Gem, preview: boolean, instant: boolean): void {
+  //   if (this.gem) {
+  //     this.growGem();
+  //     return;
+  //   }
+  //   this.gem = gem;
+  //   if (preview) {
+  //     this.gem.setPreview();
+  //   }
+  //   this.gem.sprite.scale.set(this.gem.scaleMod * this.sprite.scale.x * 0.85);
+  //   if (instant) {
+  //     this.gem.sprite.position = this.sprite.position;
+  //   } else {
+  //     new TWEEDLE.Tween(this.gem.sprite)
+  //       .to({ x: this.sprite.x, y: this.sprite.y }, 100)
+  //       .start();
+  //   }
+  // }
 
   resetGemPosition(): void {
     if (!this.gem) return;
@@ -100,11 +122,9 @@ export class Tile {
 
   setScale(scale: number): void {
     this.sprite.scale.set(scale);
-    if (this.gem) this.gem.sprite.scale.set(this.gem.scaleMod * scale * 0.85);
   }
 
   setPosition(x: number, y: number): void {
     this.sprite.position.set(x, y);
-    if (this.gem) this.gem.sprite.position.set(x, y);
   }
 }

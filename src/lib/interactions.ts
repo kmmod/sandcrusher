@@ -8,15 +8,13 @@ export class Interactions {
   dragSprite: PIXI.Sprite | undefined;
   currentSetTile: Tile | undefined;
   currentHoverTile: Tile | undefined;
-  onGemSet: (Tile: any) => void;
 
-  constructor(onGemAddCallback: (tile: Tile) => void) {
+  constructor() {
     this.bindDragEnd = () => this.onDragEnd();
     this.inputPosition = new PIXI.Point(0, 0);
     this.dragSprite = undefined;
     this.currentSetTile = undefined;
     this.currentHoverTile = undefined;
-    this.onGemSet = onGemAddCallback;
   }
 
   initStageInteractions(stage: PIXI.Container) {
@@ -63,9 +61,9 @@ export class Interactions {
       ) {
         this.currentSetTile.resetGemPosition();
       } else if (this.currentHoverTile) {
-        this.currentHoverTile.addGem(this.currentSetTile.gem, false, false);
+        this.currentHoverTile.addGem(this.currentSetTile.gem);
         this.currentSetTile.removeGem();
-        this.onGemSet(this.currentHoverTile);
+        // this.onGemSet(this.currentHoverTile);
       } else {
         console.warn("Not valid interaction");
       }

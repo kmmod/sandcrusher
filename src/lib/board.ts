@@ -1,26 +1,36 @@
 import * as PIXI from "pixi.js";
-import { Gem, GemType } from "./gem";
-import { Options } from "./main";
+import { Assets } from "./assets";
+import { Gem } from "./gem";
+import { Interactions } from "./interactions";
 import { Tile } from "./tile";
-import { randomItems } from "./utils";
+import { GemType, TileType, Options } from "./types";
+import { fractionToAmount, randomItems } from "./utils";
 
 export class Board {
   columns: number;
   rows: number;
+  stage: PIXI.Container<PIXI.DisplayObject>;
+  assets: Assets;
+  interactions: Interactions;
   tiles: Tile[];
+  gems: Gem[];
   nextTiles: Tile[];
 
-  constructor(columns: number, rows: number) {
+  constructor(
+    columns: number,
+    rows: number,
+    stage: PIXI.Container,
+    assets: Assets,
+    interactions: Interactions
+  ) {
     this.columns = columns;
     this.rows = rows;
+    this.stage = stage;
+    this.assets = assets;
+    this.interactions = interactions;
     this.tiles = [];
+    this.gems = [];
     this.nextTiles = [];
-  }
-
-  createTiles(tileTexture: PIXI.Texture): void {
-    this.tiles = new Array(this.columns * this.rows)
-      .fill(null)
-      .map((_, i) => new Tile(i, tileTexture));
   }
 
   resizeTiles(width: number, height: number): void {
@@ -32,22 +42,55 @@ export class Board {
       const y = Math.floor(tile.id / this.columns) * stepY + stepY / 2;
       tile.setScale(stepX / tile.sprite.texture.width);
       tile.setPosition(x, y);
+      tile.updateGemTransform();
     });
   }
 
-  setNextTiles(nextGems: Gem[]): void {
-    console.assert(
-      nextGems.length === Options.NewGemsPerTurn,
-      "Wrong amount of gems"
-    );
-    this.nextTiles = randomItems(this.getEmptyTiles(), Options.NewGemsPerTurn);
-    this.nextTiles.forEach((tile: Tile) =>
-      tile.addGem(nextGems.pop()!, true, true)
-    );
+  async initTiles(): Promise<void> {
+    await this.assets.loadTileAssets();
+    const tileTexture = this.assets.getTileTexture(TileType.Default);
+    if (!tileTexture) throw new Error("Tile texture not found");
+
+    this.tiles = new Array(this.columns * this.rows).fill(null).map((_, i) => {
+      const tile = new Tile(i, tileTexture);
+
+      tile.show();
+      tile.addClickListener((event: PIXI.FederatedPointerEvent) =>
+        this.interactions.onTileClicked(event, tile)
+      );
+      tile.addHoverListener(() => this.interactions.onTileHover(tile));
+
+      this.stage.addChild(tile.sprite);
+
+      return tile;
+    });
   }
 
-  getNextTiles(): Tile[] {
-    return this.nextTiles;
+  async initGems(): Promise<void> {
+    await this.assets.loadGemAssets();
+    const initGemsCount = fractionToAmount(
+      Options.InitGemsFraction,
+      this.getTiles()
+    );
+    const randomTiles = randomItems(this.tiles, initGemsCount);
+    this.addGems(randomTiles);
+  }
+
+  addGems(tiles: Tile[]): void {
+    tiles.forEach((tile) => {
+      const gem = this.randomGem();
+      gem.show();
+      tile.addGem(gem);
+      this.stage.addChild(gem.sprite);
+    });
+  }
+
+  randomGem(): Gem {
+    const randomType = Math.floor(Math.random() * Options.GemCount);
+    const gemType = Object.values(GemType)[randomType];
+    const gemTexture = this.assets.getGemTexture(gemType);
+    if (!gemTexture) throw new Error("Gem texture not found");
+    return new Gem(gemType, gemTexture);
   }
 
   getTiles(): Tile[] {

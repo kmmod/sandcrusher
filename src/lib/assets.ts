@@ -1,8 +1,9 @@
 import * as PIXI from "pixi.js";
+import { GemType, TileType } from "./types";
 
 export class Assets {
-  tiles: { [name: string]: PIXI.Texture };
-  gems: { [name: string]: PIXI.Texture };
+  tiles: { [key in TileType]?: PIXI.Texture };
+  gems: { [key in GemType]?: PIXI.Texture };
 
   constructor() {
     this.tiles = {};
@@ -10,24 +11,24 @@ export class Assets {
   }
 
   async loadTileAssets(): Promise<void> {
-    this.tiles.tile = await PIXI.Assets.load("/img/tile.png");
+    this.tiles[TileType.Default] = await PIXI.Assets.load("/img/tile.png");
   }
 
   async loadGemAssets(): Promise<void> {
-    this.gems.red = await PIXI.Assets.load("/img/gem-red.png");
-    this.gems.blue = await PIXI.Assets.load("/img/gem-blue.png");
-    this.gems.green = await PIXI.Assets.load("/img/gem-green.png");
-    this.gems.purple = await PIXI.Assets.load("/img/gem-purple.png");
-    this.gems.yellow = await PIXI.Assets.load("/img/gem-yellow.png");
+    this.gems[GemType.Red] = await PIXI.Assets.load("/img/gem-red.png");
+    this.gems[GemType.Blue] = await PIXI.Assets.load("/img/gem-blue.png");
+    this.gems[GemType.Green] = await PIXI.Assets.load("/img/gem-green.png");
+    this.gems[GemType.Purple] = await PIXI.Assets.load("/img/gem-purple.png");
+    this.gems[GemType.Yellow] = await PIXI.Assets.load("/img/gem-yellow.png");
   }
 
-  getTileTexture(name: string): PIXI.Texture {
-    console.assert(this.tiles[name], `Texture ${name} not found`);
-    return this.tiles[name];
+  getTileTexture(tileType: TileType): PIXI.Texture | undefined {
+    console.assert(this.tiles[tileType], `Texture ${tileType} not found`);
+    return this.tiles[tileType];
   }
 
-  getGemTexture(name: string): PIXI.Texture {
-    console.assert(this.gems[name], `Texture ${name} not found`);
-    return this.gems[name];
+  getGemTexture(gemType: GemType): PIXI.Texture | undefined {
+    console.assert(this.gems[gemType], `Texture ${gemType} not found`);
+    return this.gems[gemType];
   }
 }
