@@ -11,6 +11,7 @@ export class Tile {
   bindPointerOver: () => void;
   bindPointerOut: () => void;
   gem: Gem | undefined;
+  onGemSet: () => void | undefined;
 
   constructor(id: number, texture: PIXI.Texture) {
     this.id = id;
@@ -23,6 +24,7 @@ export class Tile {
     this.sprite.on("pointerover", this.bindPointerOver);
     this.sprite.on("pointerout", this.bindPointerOut);
     this.gem = undefined;
+    this.onGemSet = () => undefined;
   }
 
   createSprite(texture: PIXI.Texture): PIXI.Sprite {
@@ -43,17 +45,32 @@ export class Tile {
     this.sprite.on("pointerover", callback);
   }
 
-  // growGem(): void {
-  //   if (!this.gem) return;
-  //   this.gem.scaleMod = 1;
-  //   this.gem.preview = false;
-  //   this.gem.sprite.scale.set(this.gem.scaleMod * this.sprite.scale.x * 0.85);
-  // }
-  //
+  addGemSetListener(callback: () => void): void {
+    this.onGemSet = callback;
+  }
+
   addGem(gem: Gem): void {
+    if (this.gem?.preview) {
+      this.addGemFromPreview();
+    } else {
+      this.addNewGem(gem);
+    }
+  }
+
+  setGem(gem: Gem): void {
+    this.gem = gem;
+    this.gem.slideTo(this.sprite.position);
+  }
+
+  addGemFromPreview(): void {
+    this.gem?.enlarge();
+  }
+
+  addNewGem(gem: Gem): void {
     this.gem = gem;
     this.gem.sprite.position = this.sprite.position;
     this.gem.sprite.scale.set(this.sprite.scale.x * 0.85);
+    this.gem.show();
   }
 
   updateGemTransform() {
@@ -62,24 +79,6 @@ export class Tile {
     this.gem.sprite.scale.set(this.sprite.scale.x * 0.85);
   }
 
-  // addGemTmp(gem: Gem, preview: boolean, instant: boolean): void {
-  //   if (this.gem) {
-  //     this.growGem();
-  //     return;
-  //   }
-  //   this.gem = gem;
-  //   if (preview) {
-  //     this.gem.setPreview();
-  //   }
-  //   this.gem.sprite.scale.set(this.gem.scaleMod * this.sprite.scale.x * 0.85);
-  //   if (instant) {
-  //     this.gem.sprite.position = this.sprite.position;
-  //   } else {
-  //     new TWEEDLE.Tween(this.gem.sprite)
-  //       .to({ x: this.sprite.x, y: this.sprite.y }, 100)
-  //       .start();
-  //   }
-  // }
 
   resetGemPosition(): void {
     if (!this.gem) return;
@@ -89,6 +88,11 @@ export class Tile {
   }
 
   removeGem(): void {
+    this.gem = undefined;
+  }
+
+  destroyGem(): void {
+    this.gem?.destroy();
     this.gem = undefined;
   }
 

@@ -59,6 +59,7 @@ export class Board {
         this.interactions.onTileClicked(event, tile)
       );
       tile.addHoverListener(() => this.interactions.onTileHover(tile));
+      tile.addGemSetListener(() => this.onGemSet(tile));
 
       this.stage.addChild(tile.sprite);
 
@@ -72,16 +73,27 @@ export class Board {
       Options.InitGemsFraction,
       this.getTiles()
     );
-    const randomTiles = randomItems(this.tiles, initGemsCount);
+    const randomTiles = randomItems(this.getEmptyTiles(), initGemsCount);
     this.addGems(randomTiles);
   }
 
   addGems(tiles: Tile[]): void {
     tiles.forEach((tile) => {
       const gem = this.randomGem();
-      gem.show();
       tile.addGem(gem);
       this.stage.addChild(gem.sprite);
+    });
+    const matches = this.getAllMatches(tiles);
+    if (matches.length > 0) {
+      this.removeGems(matches);
+    }
+  }
+
+  removeGems(tiles: Tile[]): void {
+    tiles.forEach((tile) => {
+      if (tile.gem) {
+        tile.destroyGem();
+      }
     });
   }
 
@@ -93,12 +105,30 @@ export class Board {
     return new Gem(gemType, gemTexture);
   }
 
+  onGemSet(tile: Tile): void {
+    const matches = this.getMatches(tile);
+    if (matches.length > 0) {
+      this.removeGems(matches);
+    } else {
+      const randomTiles = randomItems(
+        this.getEmptyTiles(),
+        Options.NewGemsPerTurn
+      );
+      this.addGems(randomTiles);
+    }
+  }
+
   getTiles(): Tile[] {
     return this.tiles;
   }
 
   getEmptyTiles(): Tile[] {
     return this.tiles.filter((tile) => tile.gem === undefined);
+  }
+
+  getAllMatches(tiles: Tile[]): Tile[] {
+    const matches = tiles.flatMap((tile) => this.getMatches(tile));
+    return [...new Set(matches)];
   }
 
   getMatches(tile: Tile): Tile[] {

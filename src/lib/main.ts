@@ -63,25 +63,12 @@ export class Game {
   }
 
   async init(): Promise<void> {
-    await this.board.initTiles();
+    await this.board.initTiles()
+    this.resize();
     await this.board.initGems();
     this.interactions.initStageInteractions(this.app.stage);
     this.interactions.update(this.app);
-    this.resize();
   }
-
-  // onGemSet(tile: Tile): void {
-  //   const matches = this.board.getMatches(tile);
-  //   if (matches.length === 0) {
-  //     const nextTiles = this.board.getNextTiles();
-  //     // if (nextTiles.length === 0) DEFEAT
-  //     this.addGems(nextTiles);
-  //     this.board.setNextTiles(this.randomGems());
-  //     this.addGemsPreview(this.board.getNextTiles());
-  //   } else {
-  //     this.removeGems(matches);
-  //   }
-  // }
 
   getView(): HTMLCanvasElement {
     return this.app.view as HTMLCanvasElement;

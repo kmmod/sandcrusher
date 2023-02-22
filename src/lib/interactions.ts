@@ -61,9 +61,9 @@ export class Interactions {
       ) {
         this.currentSetTile.resetGemPosition();
       } else if (this.currentHoverTile) {
-        this.currentHoverTile.addGem(this.currentSetTile.gem);
+        this.currentHoverTile.setGem(this.currentSetTile.gem);
         this.currentSetTile.removeGem();
-        // this.onGemSet(this.currentHoverTile);
+        this.currentHoverTile.onGemSet();
       } else {
         console.warn("Not valid interaction");
       }
