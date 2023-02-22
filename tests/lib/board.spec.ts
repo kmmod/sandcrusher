@@ -1,13 +1,19 @@
 import * as PIXI from "pixi.js";
 import { describe, expect, test, vi } from "vitest";
+import { Assets } from "../../src/lib/assets";
 import { Board } from "../../src/lib/board";
-import { Gem, GemType } from "../../src/lib/gem";
+import { Gem } from "../../src/lib/gem";
+import { Interactions } from "../../src/lib/interactions";
 import { Tile } from "../../src/lib/tile";
+import { GemType } from "../../src/lib/types";
 
 describe("Board is properly created", () => {
-  const board = new Board(10, 10);
+  const app = new PIXI.Application();
+  const assets = new Assets();
+  const interactions = new Interactions();
+  const board = new Board(10, 10, app.stage, assets, interactions);
   const tile = PIXI.Texture.from("/img/tile.png");
-  board.initTiles(tile);
+  board.initTiles();
 
   test("Board accepts width and height", () => {
     expect(board.columns).toBe(10);
@@ -38,9 +44,12 @@ describe("Board is properly created", () => {
 });
 
 describe("Board tiles are properly resized", () => {
-  const board = new Board(10, 10);
+  const app = new PIXI.Application();
+  const assets = new Assets();
+  const interactions = new Interactions();
+  const board = new Board(10, 10, app.stage, assets, interactions);
   const tile = PIXI.Texture.from("/img/tile.png");
-  board.initTiles(tile);
+  board.initTiles();
 
   const width = 1000;
   const height = 1000;
@@ -62,11 +71,14 @@ describe("Board tiles are properly resized", () => {
 });
 
 describe("Board returns tiles properly", () => {
-  const board = new Board(10, 10);
+  const app = new PIXI.Application();
+  const assets = new Assets();
+  const interactions = new Interactions();
+  const board = new Board(10, 10, app.stage, assets, interactions);
   const tile = PIXI.Texture.from("/img/tile.png");
   const gemTexture = PIXI.Texture.from("/img/gem.png");
   const gem = new Gem(GemType.Red, gemTexture);
-  board.initTiles(tile);
+  board.initTiles();
 
   test("Returns all tiles", () => {
     expect(board.getTiles()).toBe(board.tiles);
@@ -83,12 +95,15 @@ describe("Board returns tiles properly", () => {
 });
 
 describe("Matches are properly checked", () => {
-  const board = new Board(10, 10);
+  const app = new PIXI.Application();
+  const assets = new Assets();
+  const interactions = new Interactions();
+  const board = new Board(10, 10, app.stage, assets, interactions);
   const tile = PIXI.Texture.from("/img/tile.png");
   const gemTexture = PIXI.Texture.from("/img/gem.png");
   const gemRed = new Gem(GemType.Red, gemTexture);
   const gemGreen = new Gem(GemType.Green, gemTexture);
-  board.initTiles(tile);
+  board.initTiles();
 
   test("Returns empty array if there is no match", () => {
     const matches = board.getMatches(board.tiles[0]);

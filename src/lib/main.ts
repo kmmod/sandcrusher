@@ -63,7 +63,7 @@ export class Game {
   }
 
   async init(): Promise<void> {
-    await this.board.initTiles()
+    await this.board.initTiles();
     this.resize();
     await this.board.initGems();
     this.interactions.initStageInteractions(this.app.stage);

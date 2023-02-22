@@ -1,6 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
 import * as PIXI from "pixi.js";
 import { Game } from "../../src/lib/main";
+import { Options } from "../../src/lib/types";
 
 describe("Game initialization", () => {
   const game = new Game(10, 10);
@@ -30,11 +31,13 @@ describe("Game initialization", () => {
     PIXI.Assets.load = vi.fn().mockResolvedValue(sprite);
 
     await game.init();
-    const initialGemAmount = game.board.getTiles().length * 0.2;
+    const initialGemAmount =
+      game.board.getTiles().length * Options.InitGemsFraction;
 
     expect(game.board.tiles.length).toBe(100);
-    expect(game.board.tiles.filter((tile) => tile.gem).length).toBe(
-      initialGemAmount
-    );
+    expect(
+      game.board.tiles.filter((tile) => tile.gem && tile.gem?.preview === false)
+        .length
+    ).toBe(initialGemAmount);
   });
 });

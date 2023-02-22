@@ -8,6 +8,7 @@ export class Gem {
   value: number;
   preview: boolean;
   scaleMod: number;
+  alphaMod: number;
   fadeDuration: number;
   fadeTween: TWEEDLE.Tween<PIXI.Sprite>;
   slideDuration: number;
@@ -22,6 +23,7 @@ export class Gem {
     this.value = 1;
     this.preview = false;
     this.scaleMod = 1;
+    this.alphaMod = 1;
     this.fadeDuration = 500;
     this.slideDuration = 250;
     this.scaleDuration = 500;
@@ -39,12 +41,27 @@ export class Gem {
 
   setPreview(): void {
     this.preview = true;
-    this.scaleMod = 0.5;
+    this.scaleMod = 0.3;
+    this.alphaMod = 0.8;
   }
 
-  enlarge(): void {
+  setTransform(position: PIXI.Point, scale: number) {
+    this.sprite.position = position;
+    this.sprite.scale.set(scale * this.scaleMod * 0.85);
+  }
+
+  enlarge(scale: number): void {
     this.preview = false;
+    this.fadeTween
+      .from({ alpha: this.sprite.alpha })
+      .to({ alpha: 1.0 }, this.fadeDuration)
+      .start();
+    this.scaleTween
+      .from({ x: this.sprite.scale.x, y: this.sprite.scale.y })
+      .to({ x: scale * 0.85, y: scale * 0.85 }, this.scaleDuration)
+      .start();
     this.scaleMod = 1;
+    this.alphaMod = 1;
   }
 
   slideTo(position: PIXI.Point): void {
@@ -58,7 +75,9 @@ export class Gem {
   show(): void {
     const curr_scale = this.sprite.scale.x;
     this.sprite.alpha = 0;
-    this.fadeTween.to({ alpha: 1.0 }, this.fadeDuration).start();
+    this.fadeTween
+      .to({ alpha: 1.0 * this.alphaMod }, this.fadeDuration)
+      .start();
     this.scaleTween
       .from({ x: 0, y: 0 })
       .to({ x: curr_scale, y: curr_scale }, this.scaleDuration)
@@ -73,12 +92,16 @@ export class Gem {
       .start();
   }
 
+  destroy_instantly(): void {
+    this.sprite.destroy();
+  }
+
   destroy(): void {
     this.destroyTween
       .from({ tint: this.sprite.tint })
-      .to({ tint: 0xAAFFFF }, this.fadeDuration)
+      .to({ tint: 0xaaffff }, this.fadeDuration)
       .onComplete(() => this.sprite.destroy())
-      .delay(this.fadeDuration)
+      .delay(this.fadeDuration * 0.25)
       .start();
   }
 }

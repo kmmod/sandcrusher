@@ -75,18 +75,31 @@ export class Board {
     );
     const randomTiles = randomItems(this.getEmptyTiles(), initGemsCount);
     this.addGems(randomTiles);
+    const previeTiles = randomItems(
+      this.getEmptyTiles(),
+      Options.NewGemsPerTurn
+    );
+    this.addPreviewGems(previeTiles);
   }
 
   addGems(tiles: Tile[]): void {
     tiles.forEach((tile) => {
       const gem = this.randomGem();
-      tile.addGem(gem);
       this.stage.addChild(gem.sprite);
+      tile.addGem(gem);
     });
     const matches = this.getAllMatches(tiles);
     if (matches.length > 0) {
       this.removeGems(matches);
     }
+  }
+
+  addPreviewGems(tiles: Tile[]): void {
+    tiles.forEach((tile) => {
+      const gem = this.randomGem();
+      tile.addPreviewGem(gem);
+      this.stage.addChild(gem.sprite);
+    });
   }
 
   removeGems(tiles: Tile[]): void {
@@ -110,12 +123,19 @@ export class Board {
     if (matches.length > 0) {
       this.removeGems(matches);
     } else {
+      const previewTiles = this.getPreviewTiles();
+      this.addGems(previewTiles);
       const randomTiles = randomItems(
         this.getEmptyTiles(),
         Options.NewGemsPerTurn
       );
-      this.addGems(randomTiles);
+      this.addPreviewGems(randomTiles);
     }
+  }
+
+  getPreviewTiles(): Tile[] {
+    const tilesWithPreview = this.tiles.filter((tile) => tile.gem?.preview);
+    return tilesWithPreview;
   }
 
   getTiles(): Tile[] {
@@ -161,7 +181,9 @@ export class Board {
       this.tiles[cornerId + this.columns + 1],
     ];
 
-    const tiles = tilesGrid.filter((tile) => tile?.gem?.type === gemType);
+    const tiles = tilesGrid.filter(
+      (tile) => tile?.gem?.preview == false && tile?.gem?.type === gemType
+    );
 
     return tiles.length === 4 ? tiles : [];
   }

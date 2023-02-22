@@ -52,33 +52,41 @@ export class Tile {
   addGem(gem: Gem): void {
     if (this.gem?.preview) {
       this.addGemFromPreview();
+      gem.destroy_instantly();
     } else {
       this.addNewGem(gem);
     }
   }
 
+  addPreviewGem(gem: Gem): void {
+    this.gem = gem;
+    this.gem.setPreview();
+    this.gem.setTransform(this.sprite.position, this.sprite.scale.x);
+    this.gem.show();
+  }
+
   setGem(gem: Gem): void {
+    if (this.gem?.preview) this.gem.destroy_instantly();
     this.gem = gem;
     this.gem.slideTo(this.sprite.position);
   }
 
   addGemFromPreview(): void {
-    this.gem?.enlarge();
+    if (!this.gem) return;
+    this.gem.enlarge(this.sprite.scale.x);
+    // this.gem.setTransform(this.sprite.position, this.sprite.scale.x);
   }
 
   addNewGem(gem: Gem): void {
     this.gem = gem;
-    this.gem.sprite.position = this.sprite.position;
-    this.gem.sprite.scale.set(this.sprite.scale.x * 0.85);
+    this.gem.setTransform(this.sprite.position, this.sprite.scale.x);
     this.gem.show();
   }
 
   updateGemTransform() {
     if (!this.gem) return;
-    this.gem.sprite.position = this.sprite.position;
-    this.gem.sprite.scale.set(this.sprite.scale.x * 0.85);
+    this.gem.setTransform(this.sprite.position, this.sprite.scale.x);
   }
-
 
   resetGemPosition(): void {
     if (!this.gem) return;
