@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for assets.ts</title>
+    <title>Code coverage report for types.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="index.html">All files</a> assets.ts</h1>
+        <h1><a href="index.html">All files</a> types.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>34/34</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>34/34</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
@@ -82,22 +82,7 @@
 <a name='L17'></a><a href='#L17'>17</a>
 <a name='L18'></a><a href='#L18'>18</a>
 <a name='L19'></a><a href='#L19'>19</a>
-<a name='L20'></a><a href='#L20'>20</a>
-<a name='L21'></a><a href='#L21'>21</a>
-<a name='L22'></a><a href='#L22'>22</a>
-<a name='L23'></a><a href='#L23'>23</a>
-<a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a>
-<a name='L35'></a><a href='#L35'>35</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L20'></a><a href='#L20'>20</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -116,54 +101,24 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">23x</span>
-<span class="cline-any cline-yes">23x</span>
-<span class="cline-any cline-yes">23x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as PIXI from "pixi.js";
-import { GemType, TileType } from "./types";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export enum GemType {
+  Red = "red",
+  Blue = "blue",
+  Green = "green",
+  Yellow = "yellow",
+  Purple = "purple",
+}
 &nbsp;
-export class Assets {
-  tiles: { [key in TileType]?: PIXI.Texture };
-  gems: { [key in GemType]?: PIXI.Texture };
+export enum TileType {
+  Default = "default",
+}
 &nbsp;
-  constructor() {
-    this.tiles = {};
-    this.gems = {};
-  }
-&nbsp;
-  async loadTileAssets(): Promise&lt;void&gt; {
-    this.tiles[TileType.Default] = await PIXI.Assets.load("/img/tile.png");
-  }
-&nbsp;
-  async loadGemAssets(): Promise&lt;void&gt; {
-    this.gems[GemType.Red] = await PIXI.Assets.load("/img/gem-red.png");
-    this.gems[GemType.Blue] = await PIXI.Assets.load("/img/gem-blue.png");
-    this.gems[GemType.Green] = await PIXI.Assets.load("/img/gem-green.png");
-    this.gems[GemType.Purple] = await PIXI.Assets.load("/img/gem-purple.png");
-    this.gems[GemType.Yellow] = await PIXI.Assets.load("/img/gem-yellow.png");
-  }
-&nbsp;
-  getTileTexture(tileType: TileType): PIXI.Texture | undefined {
-    console.assert(this.tiles[tileType], `Texture ${tileType} not found`);
-    return this.tiles[tileType];
-  }
-&nbsp;
-  getGemTexture(gemType: GemType): PIXI.Texture | undefined {
-    console.assert(this.gems[gemType], `Texture ${gemType} not found`);
-    return this.gems[gemType];
-  }
+export enum Options {
+  Columns = 8,
+  Rows = 8,
+  GemCount = 4,
+  NewGemsPerTurn = 3,
+  InitGemsFraction = 0.2,
 }
 &nbsp;</pre></td></tr></table></pre>
 

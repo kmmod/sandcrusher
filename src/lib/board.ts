@@ -2,6 +2,7 @@ import * as PIXI from "pixi.js";
 import { Assets } from "./assets";
 import { Gem } from "./gem";
 import { Interactions } from "./interactions";
+import { PathFinder } from "./pathfinder";
 import { Tile } from "./tile";
 import { GemType, TileType, Options } from "./types";
 import { fractionToAmount, randomItems } from "./utils";
@@ -15,19 +16,22 @@ export class Board {
   tiles: Tile[];
   gems: Gem[];
   nextTiles: Tile[];
+    pathFinder: PathFinder;
 
   constructor(
     columns: number,
     rows: number,
     stage: PIXI.Container,
     assets: Assets,
-    interactions: Interactions
+    interactions: Interactions,
+    pathFinder: PathFinder
   ) {
     this.columns = columns;
     this.rows = rows;
     this.stage = stage;
     this.assets = assets;
     this.interactions = interactions;
+    this.pathFinder = pathFinder;
     this.tiles = [];
     this.gems = [];
     this.nextTiles = [];

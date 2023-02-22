@@ -3,6 +3,7 @@ import * as TWEEDLE from "tweedle.js";
 import { Assets } from "./assets";
 import { Board } from "./board";
 import { Interactions } from "./interactions";
+import { PathFinder } from "./pathfinder";
 import { Options } from "./types";
 
 export class Game {
@@ -12,19 +13,22 @@ export class Game {
   board: Board;
   interactions: Interactions;
   resizeElement: HTMLDivElement | undefined;
+  pathFinder: any;
 
   constructor(columns: number = Options.Columns, rows: number = Options.Rows) {
     this.bindResize = () => this.resize();
     this.resizeElement = undefined;
     this.app = this.setPixiApp();
     this.assets = new Assets();
-    this.interactions = new Interactions();
+    this.pathFinder = new PathFinder();
+    this.interactions = new Interactions(this.pathFinder);
     this.board = new Board(
       columns,
       rows,
       this.app.stage,
       this.assets,
-      this.interactions
+      this.interactions,
+      this.pathFinder
     );
   }
 

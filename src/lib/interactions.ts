@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js";
+import { PathFinder } from "./pathfinder";
 import { Tile } from "./tile";
 import { lerpPosition } from "./utils";
 
@@ -8,8 +9,10 @@ export class Interactions {
   dragSprite: PIXI.Sprite | undefined;
   currentSetTile: Tile | undefined;
   currentHoverTile: Tile | undefined;
+  pathFinder: PathFinder;
 
-  constructor() {
+  constructor(pathFinder: PathFinder) {
+    this.pathFinder = pathFinder;
     this.bindDragEnd = () => this.onDragEnd();
     this.inputPosition = new PIXI.Point(0, 0);
     this.dragSprite = undefined;
@@ -51,6 +54,9 @@ export class Interactions {
 
   onTileHover(tile: Tile): void {
     this.currentHoverTile = tile;
+    if (this.currentSetTile && this.dragSprite) {
+      this.pathFinder.findPath(this.currentSetTile, tile);
+    }
   }
 
   onDragEnd(): void {
@@ -60,10 +66,11 @@ export class Interactions {
         this.currentHoverTile?.gem.preview === false
       ) {
         this.currentSetTile.resetGemPosition();
-      } else if (this.currentHoverTile) {
+      } else if (this.currentHoverTile && this.pathFinder.pathFound) {
         this.currentHoverTile.setGem(this.currentSetTile.gem);
         this.currentSetTile.removeGem();
         this.currentHoverTile.onGemSet();
+        this.pathFinder.reset();
       } else {
         console.warn("Not valid interaction");
       }
