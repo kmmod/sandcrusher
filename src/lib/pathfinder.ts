@@ -169,7 +169,6 @@ export class PathFinder {
     }
     this.path = path;
     this.pathFound = path.length > 0;
-    console.log(this.pathFound);
     this.resetNodes();
   }
 
