@@ -16,7 +16,7 @@ export class Board {
   tiles: Tile[];
   gems: Gem[];
   nextTiles: Tile[];
-    pathFinder: PathFinder;
+  pathFinder: PathFinder;
 
   constructor(
     columns: number,
@@ -84,6 +84,7 @@ export class Board {
       Options.NewGemsPerTurn
     );
     this.addPreviewGems(previeTiles);
+    this.pathFinder.reset(this.getEmptyTiles());
   }
 
   addGems(tiles: Tile[]): void {
@@ -135,6 +136,7 @@ export class Board {
       );
       this.addPreviewGems(randomTiles);
     }
+    this.pathFinder.reset(this.getEmptyTiles());
   }
 
   getPreviewTiles(): Tile[] {

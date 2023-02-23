@@ -70,7 +70,6 @@ export class Interactions {
         this.currentHoverTile.setGem(this.currentSetTile.gem);
         this.currentSetTile.removeGem();
         this.currentHoverTile.onGemSet();
-        this.pathFinder.reset();
       } else {
         console.warn("Not valid interaction");
       }

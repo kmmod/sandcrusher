@@ -74,7 +74,6 @@ export class Tile {
   addGemFromPreview(): void {
     if (!this.gem) return;
     this.gem.enlarge(this.sprite.scale.x);
-    // this.gem.setTransform(this.sprite.position, this.sprite.scale.x);
   }
 
   addNewGem(gem: Gem): void {
