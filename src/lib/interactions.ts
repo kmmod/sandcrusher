@@ -62,11 +62,12 @@ export class Interactions {
   onDragEnd(): void {
     if (this.dragSprite && this.currentSetTile?.gem) {
       if (
-        this.currentHoverTile?.gem &&
-        this.currentHoverTile?.gem.preview === false
+        this.pathFinder.pathFound === false ||
+        (this.currentHoverTile?.gem &&
+          this.currentHoverTile?.gem.preview === false)
       ) {
         this.currentSetTile.resetGemPosition();
-      } else if (this.currentHoverTile && this.pathFinder.pathFound) {
+      } else if (this.currentHoverTile) {
         this.currentHoverTile.setGem(this.currentSetTile.gem);
         this.currentSetTile.removeGem();
         this.currentHoverTile.onGemSet();

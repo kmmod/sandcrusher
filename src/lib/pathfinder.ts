@@ -92,12 +92,12 @@ class NodePriorityQueue {
       this.sinkDown(0);
     }
     return result;
-  };
+  }
 
   insert(node: Node) {
     this.tree.push(node);
     this.bubbleUp(this.tree.length - 1);
-  };
+  }
 
   update(node: Node) {
     const idx = this.tree.indexOf(node);
@@ -110,12 +110,12 @@ class NodePriorityQueue {
     } else {
       this.sinkDown(idx);
     }
-  };
+  }
 
   size() {
     return this.tree.length;
-  };
-};
+  }
+}
 
 export class PathFinder {
   pathFound: boolean;
@@ -128,20 +128,20 @@ export class PathFinder {
     this.path = [];
   }
 
-  findPath(start: Tile, end: Tile): Tile[] {
+  findPath(start: Tile, end: Tile): void {
     const startNode = new Node(start.id);
     const endNode = new Node(end.id);
+    this.nodes.push(startNode);
 
     const openSet = new NodePriorityQueue();
-
-    openSet.insert(new Node(start.id));
+    openSet.insert(startNode);
 
     const path: Node[] = [];
 
     while (openSet.size() > 0) {
       const current = openSet.extract();
 
-      if (current === endNode) {
+      if (current.id === endNode.id) {
         for (let pathNode = current; pathNode; pathNode = pathNode.parent) {
           if (pathNode) {
             path.push(pathNode);
@@ -151,9 +151,9 @@ export class PathFinder {
         break;
       }
 
-      const neighbors = this.getNeighbors(current);
+      const neighbours = this.getNeighbors(current);
 
-      neighbors.forEach((neighbor) => {
+      neighbours.forEach((neighbor) => {
         const score = current.score + 1;
         const visited = neighbor.visited() || neighbor === startNode;
 
@@ -165,38 +165,39 @@ export class PathFinder {
             openSet.update(neighbor);
           }
         }
-      })
-      
-
+      });
     }
-    this.path = path; 
-    console.log(path);
-
-    return [];
+    this.path = path;
+    this.pathFound = path.length > 0;
+    console.log(this.pathFound);
+    this.resetNodes();
   }
 
   getNeighbors(node: Node): Node[] {
-    const neighbors = [];
-    const x = node.id % 8;
-    const y = Math.floor(node.id / 8);
+    const neighbours = [];
+    const x = Math.floor(node.id / 8) * 8;
+    // FIXME: PLEASE FIX THIS
+    if (node.id - 1 >= x) {
+      neighbours.push(this.nodes.find((n) => n.id === node.id - 1));
+    }
+    if (node.id + 1 <= x + 8) {
+      neighbours.push(this.nodes.find((n) => n.id === node.id + 1));
+    }
+    neighbours.push(this.nodes.find((n) => n.id === node.id - 8));
+    neighbours.push(this.nodes.find((n) => n.id === node.id + 8));
+    return neighbours.filter((n) => n !== undefined);
+  }
 
-    if (x > 0) {
-      neighbors.push(this.nodes[node.id - 1]);
-    }
-    if (x < 9) {
-      neighbors.push(this.nodes[node.id + 1]);
-    }
-    if (y > 0) {
-      neighbors.push(this.nodes[node.id - 10]);
-    }
-    if (y < 9) {
-      neighbors.push(this.nodes[node.id + 10]);
-    }
-    return neighbors;
+  resetNodes(): void {
+    this.nodes.forEach((node) => {
+      node.parent = null;
+      node.score = 0;
+    });
   }
 
   reset(tiles: Tile[]): void {
     this.pathFound = true;
+    this.nodes.length = 0;
     this.nodes = tiles.map((tile) => new Node(tile.id));
   }
 }

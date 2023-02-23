@@ -149,7 +149,9 @@ export class Board {
   }
 
   getEmptyTiles(): Tile[] {
-    return this.tiles.filter((tile) => tile.gem === undefined);
+    return this.tiles.filter(
+      (tile) => tile.gem === undefined || tile.gem?.preview
+    );
   }
 
   getAllMatches(tiles: Tile[]): Tile[] {
