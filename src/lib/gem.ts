@@ -45,7 +45,7 @@ export class Gem {
     this.alphaMod = 0.8;
   }
 
-  setTransform(position: PIXI.Point, scale: number) {
+  setTransform(position: PIXI.Point, scale: number): void {
     this.sprite.position = position;
     this.sprite.scale.set(scale * this.scaleMod * 0.85);
   }

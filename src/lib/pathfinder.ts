@@ -53,7 +53,7 @@ class NodePriorityQueue {
     }
   }
 
-  private sinkDown(idx: number) {
+  private sinkDown(idx: number): void {
     const node = this.tree[idx];
 
     while (true) {
@@ -90,7 +90,7 @@ class NodePriorityQueue {
     }
   }
 
-  extract() {
+  extract(): Node {
     const result = this.tree[0];
     const end = this.tree.pop();
     if (this.tree.length > 0) {
@@ -100,12 +100,12 @@ class NodePriorityQueue {
     return result;
   }
 
-  insert(node: Node) {
+  insert(node: Node): void {
     this.tree.push(node);
     this.bubbleUp(this.tree.length - 1);
   }
 
-  update(node: Node) {
+  update(node: Node): void {
     const idx = this.tree.indexOf(node);
     if (idx === 0) {
       return;
@@ -118,7 +118,7 @@ class NodePriorityQueue {
     }
   }
 
-  size() {
+  size(): number {
     return this.tree.length;
   }
 }
@@ -178,8 +178,6 @@ export class PathFinder {
     }
 
     this.pathFound = path.length > 0;
-    // const returnPath = path.length > 0 ? path : [startNode, endNode];
-
     this.onPathFound(path);
     this.resetNodes();
   }
@@ -255,11 +253,11 @@ export class PathFinder {
     return "none";
   }
 
-  addPathFoundListener(observer: any) {
+  addPathFoundListener(observer: any): void {
     this.onPathFoundListeners.push(observer);
   }
 
-  onPathFound(path: Node[]) {
+  onPathFound(path: Node[]): void {
     this.onPathFoundListeners.forEach((listener) => {
       listener(path);
     });

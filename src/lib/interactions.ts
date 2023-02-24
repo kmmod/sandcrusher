@@ -20,7 +20,7 @@ export class Interactions {
     this.currentHoverTile = undefined;
   }
 
-  initStageInteractions(stage: PIXI.Container) {
+  initStageInteractions(stage: PIXI.Container): void {
     stage.sortableChildren = true;
     stage.on("pointerup", this.bindDragEnd);
     stage.on("pointerupoutside", this.bindDragEnd);

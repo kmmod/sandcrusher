@@ -200,7 +200,7 @@ export class Board {
     return [...new Set(candidates)];
   }
 
-  private slidingWindow(cornerId: number, gemType: GemType) {
+  private slidingWindow(cornerId: number, gemType: GemType): Tile[] {
     // Look for matches in 2x2 square around cornerTile
     const tilesGrid = [
       this.tiles[cornerId],
