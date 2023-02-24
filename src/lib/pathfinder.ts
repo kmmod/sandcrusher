@@ -1,14 +1,20 @@
 import { Tile } from "./tile";
 
-class Node {
+export class Node {
   id: number;
   score: number;
   parent: Node | null;
+  obstacle: boolean;
 
-  constructor(id: number) {
+  constructor(id: number, obstacle: boolean) {
     this.id = id;
     this.score = 0;
     this.parent = null;
+    this.obstacle = obstacle;
+  }
+
+  isOpen(): boolean {
+    return !this.obstacle;
   }
 
   visited(): boolean {
@@ -118,20 +124,23 @@ class NodePriorityQueue {
 }
 
 export class PathFinder {
+  columns: number;
   pathFound: boolean;
   nodes: Node[];
   path: Node[];
+  onPathFoundListeners: any[];
 
-  constructor() {
+  constructor(columns: number) {
+    this.columns = columns;
     this.pathFound = true;
     this.nodes = [];
     this.path = [];
+    this.onPathFoundListeners = [];
   }
 
   findPath(start: Tile, end: Tile): void {
-    const startNode = new Node(start.id);
-    const endNode = new Node(end.id);
-    this.nodes.push(startNode);
+    const startNode = new Node(start.id, start.isTaken());
+    const endNode = new Node(end.id, end.isTaken());
 
     const openSet = new NodePriorityQueue();
     openSet.insert(startNode);
@@ -167,24 +176,93 @@ export class PathFinder {
         }
       });
     }
-    this.path = path;
+
     this.pathFound = path.length > 0;
+    // const returnPath = path.length > 0 ? path : [startNode, endNode];
+
+    this.onPathFound(path);
     this.resetNodes();
   }
 
   getNeighbors(node: Node): Node[] {
-    const neighbours = [];
-    const x = Math.floor(node.id / 8) * 8;
-    // FIXME: PLEASE FIX THIS
-    if (node.id - 1 >= x) {
-      neighbours.push(this.nodes.find((n) => n.id === node.id - 1));
+    const neighbours: Node[] = [];
+
+    if (this.horizontalNode(node, -1)) {
+      neighbours.push(this.nodes[node.id - 1]);
     }
-    if (node.id + 1 <= x + 8) {
-      neighbours.push(this.nodes.find((n) => n.id === node.id + 1));
+    if (this.horizontalNode(node, 1)) {
+      neighbours.push(this.nodes[node.id + 1]);
     }
-    neighbours.push(this.nodes.find((n) => n.id === node.id - 8));
-    neighbours.push(this.nodes.find((n) => n.id === node.id + 8));
-    return neighbours.filter((n) => n !== undefined);
+    if (this.verticalNode(node, -8)) {
+      neighbours.push(this.nodes[node.id - this.columns]);
+    }
+    if (this.verticalNode(node, 8)) {
+      neighbours.push(this.nodes[node.id + this.columns]);
+    }
+
+    return neighbours;
+  }
+
+  horizontalNode(node: Node, direction: number): boolean {
+    return (
+      this.nodes[node.id + direction] &&
+      this.nodes[node.id + direction].isOpen() &&
+      this.isOnSameRow(node, this.nodes[node.id + direction])
+    );
+  }
+
+  verticalNode(node: Node, direction: number): boolean {
+    return (
+      this.nodes[node.id + direction] &&
+      this.nodes[node.id + direction].isOpen()
+    );
+  }
+
+  isOnSameRow(node: Node, next: Node): boolean {
+    return Math.floor(node.id / 8) === Math.floor(next.id / 8);
+  }
+
+  simplifyPath(path: Node[]): Node[] {
+    const simplifiedPath = [];
+    let lastDirection = "none";
+
+    for (let i = 0; i < path.length - 1; i++) {
+      const current = path[i];
+      const next = path[i + 1];
+
+      const direction = this.getDirection(current, next);
+
+      if (direction !== lastDirection) {
+        simplifiedPath.push(current);
+        lastDirection = direction;
+      }
+    }
+
+    simplifiedPath.push(path[path.length - 1]);
+    return simplifiedPath;
+  }
+
+  getDirection(current: Node, next: Node): string {
+    if (next.id === current.id - 1) {
+      return "left";
+    } else if (next.id === current.id + 1) {
+      return "right";
+    } else if (next.id === current.id - this.columns) {
+      return "up";
+    } else if (next.id === current.id + this.columns) {
+      return "down";
+    }
+    return "none";
+  }
+
+  addPathFoundListener(observer: any) {
+    this.onPathFoundListeners.push(observer);
+  }
+
+  onPathFound(path: Node[]) {
+    this.onPathFoundListeners.forEach((listener) => {
+      listener(path);
+    });
   }
 
   resetNodes(): void {
@@ -197,6 +275,6 @@ export class PathFinder {
   reset(tiles: Tile[]): void {
     this.pathFound = true;
     this.nodes.length = 0;
-    this.nodes = tiles.map((tile) => new Node(tile.id));
+    this.nodes = tiles.map((tile) => new Node(tile.id, tile.isTaken()));
   }
 }

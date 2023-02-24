@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 import { Assets } from "./assets";
 import { Gem } from "./gem";
 import { Interactions } from "./interactions";
-import { PathFinder } from "./pathfinder";
+import { PathFinder, Node } from "./pathfinder";
 import { Tile } from "./tile";
 import { GemType, TileType, Options } from "./types";
 import { fractionToAmount, randomItems } from "./utils";
@@ -17,6 +17,7 @@ export class Board {
   gems: Gem[];
   nextTiles: Tile[];
   pathFinder: PathFinder;
+  polyline: PIXI.Graphics;
 
   constructor(
     columns: number,
@@ -35,6 +36,7 @@ export class Board {
     this.tiles = [];
     this.gems = [];
     this.nextTiles = [];
+    this.polyline = new PIXI.Graphics();
   }
 
   resizeTiles(width: number, height: number): void {
@@ -69,6 +71,10 @@ export class Board {
 
       return tile;
     });
+
+    this.pathFinder.addPathFoundListener((path: Node[]) =>
+      this.onPathFound(path)
+    );
   }
 
   async initGems(): Promise<void> {
@@ -84,7 +90,7 @@ export class Board {
       Options.NewGemsPerTurn
     );
     this.addPreviewGems(previeTiles);
-    this.pathFinder.reset(this.getEmptyTiles());
+    this.pathFinder.reset(this.tiles);
   }
 
   addGems(tiles: Tile[]): void {
@@ -136,7 +142,21 @@ export class Board {
       );
       this.addPreviewGems(randomTiles);
     }
-    this.pathFinder.reset(this.getEmptyTiles());
+    this.pathFinder.reset(this.tiles);
+    this.clearTilesPathOver();
+  }
+
+  onPathFound(path: Node[]): void {
+    this.clearTilesPathOver();
+
+    path.forEach((node) => {
+      const tile = this.tiles.find((tile) => tile.id === node.id);
+      tile?.onPathOver();
+    });
+  }
+
+  clearTilesPathOver(): void {
+    this.tiles.forEach((tile) => tile.onPathOut());
   }
 
   getPreviewTiles(): Tile[] {

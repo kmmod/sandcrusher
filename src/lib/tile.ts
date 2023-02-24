@@ -6,10 +6,10 @@ export class Tile {
   id: number;
   sprite: PIXI.Sprite;
   idleAlpha: number;
-  hoverAlpha: number;
+  pathAlpha: number;
   alphaTween: TWEEDLE.Tween<PIXI.Sprite>;
-  bindPointerOver: () => void;
-  bindPointerOut: () => void;
+  // bindPointerOver: () => void;
+  // bindPointerOut: () => void;
   gem: Gem | undefined;
   onGemSet: () => void | undefined;
 
@@ -17,12 +17,12 @@ export class Tile {
     this.id = id;
     this.sprite = this.createSprite(texture);
     this.idleAlpha = 0.6;
-    this.hoverAlpha = 0.8;
+    this.pathAlpha = 1.0;
     this.alphaTween = new TWEEDLE.Tween(this.sprite);
-    this.bindPointerOver = () => this.onPointerOver();
-    this.bindPointerOut = () => this.onPointerOut();
-    this.sprite.on("pointerover", this.bindPointerOver);
-    this.sprite.on("pointerout", this.bindPointerOut);
+    // this.bindPointerOver = () => this.onPointerOver();
+    // this.bindPointerOut = () => this.onPointerOut();
+    // this.sprite.on("pointerover", this.bindPointerOver);
+    // this.sprite.on("pointerout", this.bindPointerOut);
     this.gem = undefined;
     this.onGemSet = () => undefined;
   }
@@ -47,6 +47,10 @@ export class Tile {
 
   addGemSetListener(callback: () => void): void {
     this.onGemSet = callback;
+  }
+
+  isTaken(): boolean {
+    return this.gem !== undefined && !this.gem.preview;
   }
 
   addGem(gem: Gem): void {
@@ -89,6 +93,7 @@ export class Tile {
 
   resetGemPosition(): void {
     if (!this.gem) return;
+    this.onPathOut();
     new TWEEDLE.Tween(this.gem.sprite)
       .to({ x: this.sprite.x, y: this.sprite.y }, 200)
       .start();
@@ -114,20 +119,21 @@ export class Tile {
       .start();
   }
 
-  onPointerOver(): void {
+  onPathOver(): void {
+    const initAlpha = this.sprite.alpha;
     this.alphaTween
-      .stop()
-      .from({ alpha: this.sprite.alpha })
-      .to({ alpha: this.hoverAlpha }, 200)
+      .from({ alpha: initAlpha })
+      .to({ alpha: this.pathAlpha }, 100)
       .delay(0)
       .start();
   }
 
-  onPointerOut(): void {
+  onPathOut(): void {
+    const initAlpha = this.sprite.alpha;
     this.alphaTween
-      .stop()
-      .from({ alpha: this.sprite.alpha })
-      .to({ alpha: this.idleAlpha }, 1000)
+      .from({ alpha: initAlpha })
+      .to({ alpha: this.idleAlpha }, 250)
+      .delay(0)
       .start();
   }
 

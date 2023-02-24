@@ -20,7 +20,7 @@ export class Game {
     this.resizeElement = undefined;
     this.app = this.setPixiApp();
     this.assets = new Assets();
-    this.pathFinder = new PathFinder();
+    this.pathFinder = new PathFinder(columns);
     this.interactions = new Interactions(this.pathFinder);
     this.board = new Board(
       columns,
@@ -35,6 +35,7 @@ export class Game {
   setPixiApp(): PIXI.Application {
     const options = {
       backgroundAlpha: 0,
+      antialias: true,
     };
 
     const app = new PIXI.Application(options);
