@@ -74,7 +74,7 @@ class NodePriorityQueue {
         rightChild = this.tree[rightChildIdx];
         if (
           (swapIdx === null && node.score > rightChild.score) ||
-          (swapIdx !== null && leftChild.score > rightChild.score)
+          (swapIdx !== null && leftChild && leftChild.score > rightChild.score)
         ) {
           swapIdx = rightChildIdx;
         }
@@ -93,7 +93,7 @@ class NodePriorityQueue {
   extract(): Node {
     const result = this.tree[0];
     const end = this.tree.pop();
-    if (this.tree.length > 0) {
+    if (this.tree.length > 0 && end) {
       this.tree[0] = end;
       this.sinkDown(0);
     }
@@ -151,7 +151,11 @@ export class PathFinder {
       const current = openSet.extract();
 
       if (current.id === endNode.id) {
-        for (let pathNode = current; pathNode; pathNode = pathNode.parent) {
+        for (
+          let pathNode: Node | null = current;
+          pathNode;
+          pathNode = pathNode.parent
+        ) {
           if (pathNode) {
             path.push(pathNode);
           }
@@ -159,6 +163,8 @@ export class PathFinder {
         path.reverse();
         break;
       }
+
+      const neighbours = this.getNeighbors(current);
 
       neighbours.forEach((neighbour) => {
         const score = current.score + 1;
@@ -174,8 +180,6 @@ export class PathFinder {
         }
       });
     }
-
-    console.timeEnd("findPath");
 
     this.pathFound = path.length > 0;
     this.onPathFound(path);

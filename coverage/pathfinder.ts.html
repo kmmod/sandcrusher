@@ -20,15 +20,15 @@
         <h1><a href="index.html">All files</a> pathfinder.ts</h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
-            <span class="strong">51.78% </span>
+            <span class="strong">51.05% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">145/280</span>
+            <span class="fraction">145/284</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">66.66% </span>
+            <span class="strong">64.51% </span>
             <span class="quiet">Branches</span>
-            <span class="fraction">20/30</span>
+            <span class="fraction">20/31</span>
           </div>
 
           <div class="fl pad1y space-right2">
@@ -38,9 +38,9 @@
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">51.78% </span>
+            <span class="strong">51.05% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">145/280</span>
+            <span class="fraction">145/284</span>
           </div>
         </div>
         <p class="quiet">
@@ -336,7 +336,11 @@
 <a name='L278'></a><a href='#L278'>278</a>
 <a name='L279'></a><a href='#L279'>279</a>
 <a name='L280'></a><a href='#L280'>280</a>
-<a name='L281'></a><a href='#L281'>281</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L281'></a><a href='#L281'>281</a>
+<a name='L282'></a><a href='#L282'>282</a>
+<a name='L283'></a><a href='#L283'>283</a>
+<a name='L284'></a><a href='#L284'>284</a>
+<a name='L285'></a><a href='#L285'>285</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -489,6 +493,10 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -692,7 +700,7 @@ class NodePriorityQueue {
 <span class="cstat-no" title="statement not covered" >        rightChild = this.tree[rightChildIdx];</span>
 <span class="cstat-no" title="statement not covered" >        if (</span>
 <span class="cstat-no" title="statement not covered" >          (swapIdx === null &amp;&amp; node.score &gt; rightChild.score) ||</span>
-<span class="cstat-no" title="statement not covered" >          (swapIdx !== null &amp;&amp; leftChild.score &gt; rightChild.score)</span>
+<span class="cstat-no" title="statement not covered" >          (swapIdx !== null &amp;&amp; leftChild &amp;&amp; leftChild.score &gt; rightChild.score)</span>
 <span class="cstat-no" title="statement not covered" >        ) {</span>
 <span class="cstat-no" title="statement not covered" >          swapIdx = rightChildIdx;</span>
 <span class="cstat-no" title="statement not covered" >        }</span>
@@ -711,7 +719,7 @@ class NodePriorityQueue {
   extract(): Node {
     const result = this.tree[0];
     const end = this.tree.pop();
-    if (this.tree.length &gt; 0) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+    if (this.tree.length &gt; <span class="branch-0 cbranch-no" title="branch not covered" >0 &amp;&amp; end) <span class="branch-0 cbranch-no" title="branch not covered" >{</span></span>
 <span class="cstat-no" title="statement not covered" >      this.tree[0] = end;</span>
 <span class="cstat-no" title="statement not covered" >      this.sinkDown(0);</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
@@ -769,7 +777,11 @@ export class PathFinder {
       const current = openSet.extract();
 &nbsp;
       if (current.id === endNode.id) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
-<span class="cstat-no" title="statement not covered" >        for (let pathNode = current; pathNode; pathNode = pathNode.parent) {</span>
+<span class="cstat-no" title="statement not covered" >        for (</span>
+<span class="cstat-no" title="statement not covered" >          let pathNode: Node | null = current;</span>
+<span class="cstat-no" title="statement not covered" >          pathNode;</span>
+<span class="cstat-no" title="statement not covered" >          pathNode = pathNode.parent</span>
+<span class="cstat-no" title="statement not covered" >        ) {</span>
 <span class="cstat-no" title="statement not covered" >          if (pathNode) {</span>
 <span class="cstat-no" title="statement not covered" >            path.push(pathNode);</span>
 <span class="cstat-no" title="statement not covered" >          }</span>
@@ -780,16 +792,16 @@ export class PathFinder {
 &nbsp;
       const neighbours = this.getNeighbors(current);
 &nbsp;
-      neighbours.forEach((neighbor) =&gt; {
+      neighbours.forEach((neighbour) =&gt; {
 <span class="cstat-no" title="statement not covered" >        const score = current.score + 1;</span>
-<span class="cstat-no" title="statement not covered" >        const visited = neighbor.visited() || neighbor === startNode;</span>
+<span class="cstat-no" title="statement not covered" >        const visited = neighbour.visited() || neighbour === startNode;</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >        if (!visited || score &lt; neighbor.score) {</span>
-<span class="cstat-no" title="statement not covered" >          neighbor.visit(current, score);</span>
+<span class="cstat-no" title="statement not covered" >        if (!visited || score &lt; neighbour.score) {</span>
+<span class="cstat-no" title="statement not covered" >          neighbour.visit(current, score);</span>
 <span class="cstat-no" title="statement not covered" >          if (!visited) {</span>
-<span class="cstat-no" title="statement not covered" >            openSet.insert(neighbor);</span>
+<span class="cstat-no" title="statement not covered" >            openSet.insert(neighbour);</span>
 <span class="cstat-no" title="statement not covered" >          } else {</span>
-<span class="cstat-no" title="statement not covered" >            openSet.update(neighbor);</span>
+<span class="cstat-no" title="statement not covered" >            openSet.update(neighbour);</span>
 <span class="cstat-no" title="statement not covered" >          }</span>
 <span class="cstat-no" title="statement not covered" >        }</span>
       });
@@ -809,10 +821,10 @@ export class PathFinder {
     if (this.horizontalNode(node, 1)) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >      neighbours.push(this.nodes[node.id + 1]);</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-    if (this.verticalNode(node, -8)) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+    if (this.verticalNode(node, -this.columns)) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >      neighbours.push(this.nodes[node.id - this.columns]);</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-    if (this.verticalNode(node, 8)) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+    if (this.verticalNode(node, this.columns)) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >      neighbours.push(this.nodes[node.id + this.columns]);</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
 &nbsp;
@@ -910,7 +922,7 @@ export class PathFinder {
         rel="noopener noreferrer"
         >istanbul</a
       >
-      at 2023-02-25T20:48:56.396Z
+      at 2023-02-25T22:08:38.044Z
     </div>
     <script src="prettify.js"></script>
     <script>
