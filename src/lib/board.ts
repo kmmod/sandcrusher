@@ -161,6 +161,14 @@ export class Board {
 
   getPreviewTiles(): Tile[] {
     const tilesWithPreview = this.tiles.filter((tile) => tile.gem?.preview);
+    if (tilesWithPreview.length < Options.NewGemsPerTurn) {
+      const count = Options.NewGemsPerTurn - tilesWithPreview.length;
+      const randomTiles = randomItems(
+        this.getEmptyTilesWithoutPreview(),
+        count
+      );
+      tilesWithPreview.push(...randomTiles);
+    }
     return tilesWithPreview;
   }
 
@@ -172,6 +180,10 @@ export class Board {
     return this.tiles.filter(
       (tile) => tile.gem === undefined || tile.gem?.preview
     );
+  }
+
+  getEmptyTilesWithoutPreview(): Tile[] {
+    return this.tiles.filter((tile) => tile.gem === undefined);
   }
 
   getAllMatches(tiles: Tile[]): Tile[] {
@@ -202,11 +214,23 @@ export class Board {
 
   private slidingWindow(cornerId: number, gemType: GemType): Tile[] {
     // Look for matches in 2x2 square around cornerTile
+    const topLeft = cornerId;
+    const topRight = cornerId + 1;
+    const bottomLeft = cornerId + this.columns;
+    const bottomRight = cornerId + this.columns + 1;
+
+    if (
+      !this.isOnSameRow(topLeft, topRight) ||
+      !this.isOnSameRow(bottomLeft, bottomRight)
+    ) {
+      return [];
+    }
+
     const tilesGrid = [
-      this.tiles[cornerId],
-      this.tiles[cornerId + 1],
-      this.tiles[cornerId + this.columns],
-      this.tiles[cornerId + this.columns + 1],
+      this.tiles[topLeft],
+      this.tiles[topRight],
+      this.tiles[bottomLeft],
+      this.tiles[bottomRight],
     ];
 
     const tiles = tilesGrid.filter(
@@ -214,5 +238,11 @@ export class Board {
     );
 
     return tiles.length === 4 ? tiles : [];
+  }
+
+  private isOnSameRow(tileId: number, cornerId: number): boolean {
+    return (
+      Math.floor(tileId / this.columns) === Math.floor(cornerId / this.columns)
+    );
   }
 }

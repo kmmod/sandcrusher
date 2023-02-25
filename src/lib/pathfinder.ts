@@ -217,7 +217,9 @@ export class PathFinder {
   }
 
   isOnSameRow(node: Node, next: Node): boolean {
-    return Math.floor(node.id / 8) === Math.floor(next.id / 8);
+    return (
+      Math.floor(node.id / this.columns) === Math.floor(next.id / this.columns)
+    );
   }
 
   simplifyPath(path: Node[]): Node[] {
