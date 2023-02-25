@@ -160,22 +160,22 @@ export class PathFinder {
         break;
       }
 
-      const neighbours = this.getNeighbors(current);
-
-      neighbours.forEach((neighbor) => {
+      neighbours.forEach((neighbour) => {
         const score = current.score + 1;
-        const visited = neighbor.visited() || neighbor === startNode;
+        const visited = neighbour.visited() || neighbour === startNode;
 
-        if (!visited || score < neighbor.score) {
-          neighbor.visit(current, score);
+        if (!visited || score < neighbour.score) {
+          neighbour.visit(current, score);
           if (!visited) {
-            openSet.insert(neighbor);
+            openSet.insert(neighbour);
           } else {
-            openSet.update(neighbor);
+            openSet.update(neighbour);
           }
         }
       });
     }
+
+    console.timeEnd("findPath");
 
     this.pathFound = path.length > 0;
     this.onPathFound(path);
@@ -191,10 +191,10 @@ export class PathFinder {
     if (this.horizontalNode(node, 1)) {
       neighbours.push(this.nodes[node.id + 1]);
     }
-    if (this.verticalNode(node, -8)) {
+    if (this.verticalNode(node, -this.columns)) {
       neighbours.push(this.nodes[node.id - this.columns]);
     }
-    if (this.verticalNode(node, 8)) {
+    if (this.verticalNode(node, this.columns)) {
       neighbours.push(this.nodes[node.id + this.columns]);
     }
 

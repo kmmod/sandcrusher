@@ -15,5 +15,5 @@ export enum Options {
   Rows = 8,
   GemCount = 4,
   NewGemsPerTurn = 3,
-  InitGemsFraction = 0.2,
+  InitGemsFraction = 0.3,
 }
