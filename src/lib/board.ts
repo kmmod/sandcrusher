@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js";
+import * as TWEEDLE from "tweedle.js";
 import { Assets } from "./assets";
 import { Gem } from "./gem";
 import { Interactions } from "./interactions";
@@ -17,7 +18,8 @@ export class Board {
   gems: Gem[];
   nextTiles: Tile[];
   pathFinder: PathFinder;
-  polyline: PIXI.Graphics;
+  pathTrace: PIXI.Graphics;
+  pathTraceTween: TWEEDLE.Tween<PIXI.Graphics>;
 
   constructor(
     columns: number,
@@ -36,7 +38,8 @@ export class Board {
     this.tiles = [];
     this.gems = [];
     this.nextTiles = [];
-    this.polyline = new PIXI.Graphics();
+    this.pathTrace = new PIXI.Graphics();
+    this.pathTraceTween = new TWEEDLE.Tween(this.pathTrace);
   }
 
   resizeTiles(width: number, height: number): void {
@@ -75,6 +78,8 @@ export class Board {
     this.pathFinder.addPathFoundListener((path: Node[]) =>
       this.onPathFound(path)
     );
+
+    this.stage.addChild(this.pathTrace);
   }
 
   async initGems(): Promise<void> {
@@ -143,20 +148,47 @@ export class Board {
       this.addPreviewGems(randomTiles);
     }
     this.pathFinder.reset(this.tiles);
-    this.clearTilesPathOver();
+    this.pathTrace.clear();
   }
 
   onPathFound(path: Node[]): void {
-    this.clearTilesPathOver();
+    this.pathTrace.clear();
 
-    path.forEach((node) => {
-      const tile = this.tiles.find((tile) => tile.id === node.id);
-      tile?.onPathOver();
+    const tiles = path
+      .map((node) => this.tiles.find((tile) => tile.id === node.id))
+      .filter((tile) => tile !== undefined) as Tile[];
+
+    if (tiles.length === 0) return;
+
+    const scale = this.tiles[0].sprite.scale.x;
+    this.pathTrace.lineStyle(10 * scale, 0xffffff, 0.5);
+
+    const pathPoints = [];
+
+    // add two points between each tile position to make the line smoother
+    for (let i = 0; i < tiles.length - 1; i++) {
+      const curr = tiles[i];
+      const next = tiles[i + 1];
+
+      const { x: x1, y: y1 } = curr.sprite.position;
+      const { x: x4, y: y4 } = next.sprite.position;
+
+      const width = x4 - x1;
+      const height = y4 - y1;
+
+      const p1 = new PIXI.Point(x1, y1);
+      const p2 = new PIXI.Point(x1 + width / 3, y1 + height / 3);
+      const p3 = new PIXI.Point(x1 + (width / 3) * 2, y1 + (height / 3) * 2);
+
+      pathPoints.push(p1, p2, p3);
+    }
+
+    pathPoints.forEach((point: PIXI.Point) => {
+      this.pathTrace.moveTo(point.x, point.y);
+      this.pathTrace.drawCircle(point.x, point.y, 10 * scale);
     });
-  }
 
-  clearTilesPathOver(): void {
-    this.tiles.forEach((tile) => tile.onPathOut());
+    this.pathTraceTween.from({ alpha: 0 }).to({ alpha: 1 }, 250).start();
   }
 
   getPreviewTiles(): Tile[] {

@@ -8,8 +8,6 @@ export class Tile {
   idleAlpha: number;
   pathAlpha: number;
   alphaTween: TWEEDLE.Tween<PIXI.Sprite>;
-  // bindPointerOver: () => void;
-  // bindPointerOut: () => void;
   gem: Gem | undefined;
   onGemSet: () => void | undefined;
 
@@ -19,10 +17,6 @@ export class Tile {
     this.idleAlpha = 0.6;
     this.pathAlpha = 1.0;
     this.alphaTween = new TWEEDLE.Tween(this.sprite);
-    // this.bindPointerOver = () => this.onPointerOver();
-    // this.bindPointerOut = () => this.onPointerOut();
-    // this.sprite.on("pointerover", this.bindPointerOver);
-    // this.sprite.on("pointerout", this.bindPointerOut);
     this.gem = undefined;
     this.onGemSet = () => undefined;
   }
@@ -93,7 +87,6 @@ export class Tile {
 
   resetGemPosition(): void {
     if (!this.gem) return;
-    this.onPathOut();
     new TWEEDLE.Tween(this.gem.sprite)
       .to({ x: this.sprite.x, y: this.sprite.y }, 200)
       .start();
@@ -116,24 +109,6 @@ export class Tile {
     this.alphaTween
       .to({ alpha: this.idleAlpha }, duration)
       .delay(delay)
-      .start();
-  }
-
-  onPathOver(): void {
-    const initAlpha = this.sprite.alpha;
-    this.alphaTween
-      .from({ alpha: initAlpha })
-      .to({ alpha: this.pathAlpha }, 100)
-      .delay(0)
-      .start();
-  }
-
-  onPathOut(): void {
-    const initAlpha = this.sprite.alpha;
-    this.alphaTween
-      .from({ alpha: initAlpha })
-      .to({ alpha: this.idleAlpha }, 250)
-      .delay(0)
       .start();
   }
 
