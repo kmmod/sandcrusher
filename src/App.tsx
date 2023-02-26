@@ -1,4 +1,5 @@
 import type { Component } from "solid-js";
+import BackgroundImage from "./components/BackgroundImage";
 import GameScreen from "./components/GameScreen";
 
 const App: Component = () => {
@@ -8,13 +9,7 @@ const App: Component = () => {
 
   return (
     <div class="m-0">
-      <div class="absolute h-full w-full -z-10 select-none">
-        <img
-          class="object-cover h-full w-full"
-          src="/img/bg01.png"
-          alt="pyramids"
-        />
-      </div>
+      <BackgroundImage />
       <GameScreen />
     </div>
   );

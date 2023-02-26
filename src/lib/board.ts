@@ -15,11 +15,11 @@ export class Board {
   assets: Assets;
   interactions: Interactions;
   tiles: Tile[];
-  gems: Gem[];
   nextTiles: Tile[];
   pathFinder: PathFinder;
   pathTrace: PIXI.Graphics;
   pathTraceTween: TWEEDLE.Tween<PIXI.Graphics>;
+  updateScore: any;
 
   constructor(
     columns: number,
@@ -27,7 +27,8 @@ export class Board {
     stage: PIXI.Container,
     assets: Assets,
     interactions: Interactions,
-    pathFinder: PathFinder
+    pathFinder: PathFinder,
+    updateScore: any
   ) {
     this.columns = columns;
     this.rows = rows;
@@ -36,10 +37,10 @@ export class Board {
     this.interactions = interactions;
     this.pathFinder = pathFinder;
     this.tiles = [];
-    this.gems = [];
     this.nextTiles = [];
     this.pathTrace = new PIXI.Graphics();
     this.pathTraceTween = new TWEEDLE.Tween(this.pathTrace);
+    this.updateScore = updateScore;
   }
 
   resizeTiles(width: number, height: number): void {
@@ -98,6 +99,16 @@ export class Board {
     this.pathFinder.reset(this.tiles);
   }
 
+  reset(): void {
+    this.tiles.forEach((tile) => {
+      tile.gem?.sprite.destroy();
+      tile.gem = undefined;
+      tile.sprite.destroy();
+    });
+    this.tiles.length = 0;
+    this.pathTrace.clear();
+  }
+
   addGems(tiles: Tile[]): void {
     tiles.forEach((tile) => {
       const gem = this.randomGem();
@@ -137,6 +148,7 @@ export class Board {
   onGemSet(tile: Tile): void {
     const matches = this.getMatches(tile);
     if (matches.length > 0) {
+      this.updateScore(matches.length);
       this.removeGems(matches);
     } else {
       const previewTiles = this.getPreviewTiles();

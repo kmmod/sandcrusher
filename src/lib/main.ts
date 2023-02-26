@@ -7,6 +7,11 @@ import { PathFinder } from "./pathfinder";
 import { Options } from "./types";
 
 export class Game {
+  columns: number;
+  rows: number;
+  score: number;
+  scoreCallback: any;
+  bindUpdateScore: (amount: number) => void;
   bindResize: () => void;
   app: PIXI.Application<PIXI.ICanvas>;
   assets: Assets;
@@ -15,7 +20,16 @@ export class Game {
   resizeElement: HTMLDivElement | undefined;
   pathFinder: any;
 
-  constructor(columns: number = Options.Columns, rows: number = Options.Rows) {
+  constructor(
+    columns: number = Options.Columns,
+    rows: number = Options.Rows,
+    scoreCallback: any
+  ) {
+    this.columns = columns;
+    this.rows = rows;
+    this.score = 0;
+    this.scoreCallback = scoreCallback;
+    this.bindUpdateScore = (amount: number) => this.updateScore(amount);
     this.bindResize = () => this.resize();
     this.resizeElement = undefined;
     this.app = this.setPixiApp();
@@ -23,12 +37,13 @@ export class Game {
     this.pathFinder = new PathFinder(columns);
     this.interactions = new Interactions(this.pathFinder);
     this.board = new Board(
-      columns,
-      rows,
+      this.columns,
+      this.rows,
       this.app.stage,
       this.assets,
       this.interactions,
-      this.pathFinder
+      this.pathFinder,
+      this.bindUpdateScore
     );
   }
 
@@ -77,5 +92,15 @@ export class Game {
 
   getView(): HTMLCanvasElement {
     return this.app.view as HTMLCanvasElement;
+  }
+
+  resetBoard(): void {
+    this.board.reset();
+  }
+
+  updateScore(amount: number): void {
+    const powerAmount = Math.pow(amount, 2);
+    this.score += powerAmount;
+    this.scoreCallback(this.score);
   }
 }

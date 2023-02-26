@@ -1,28 +1,18 @@
-import type { Component } from "solid-js";
-import { createSignal, createEffect, onCleanup, onMount } from "solid-js";
+import { Component, createSignal } from "solid-js";
 import { Game } from "../lib/main";
+import GameHeader from "./GameHeader";
+import GameView from "./GameView";
+import ScoreCounter from "./ScoreCounter";
 
 const GameScreen: Component = () => {
-  const game = new Game(8, 8);
-  let container: HTMLDivElement;
-
-  onMount(() => {
-    game.setResizeElement(container);
-    game.init();
-  });
+  const [score, setScore] = createSignal(0);
+  const game = new Game(8, 8, setScore);
 
   return (
     <div class="absolute w-full h-full">
-      <div class="flex justify-center items-center flex-col h-1/6">
-        <p class="text-white">Sandcrusher</p>
-      </div>
-      {/* @ts-ignore */}
-      <div
-        ref={container}
-        class="flex justify-center items-center p-2 w-full h-4/6"
-      >
-        {game.getView()}
-      </div>
+      <GameHeader />
+      <GameView game={game} />
+      <ScoreCounter score={score} />
     </div>
   );
 };
