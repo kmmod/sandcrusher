@@ -20,9 +20,9 @@
         <h1><a href="index.html">All files</a> main.ts</h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
-            <span class="strong">96.29% </span>
+            <span class="strong">90.81% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">78/81</span>
+            <span class="fraction">89/98</span>
           </div>
 
           <div class="fl pad1y space-right2">
@@ -32,15 +32,15 @@
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">77.77% </span>
+            <span class="strong">58.33% </span>
             <span class="quiet">Functions</span>
-            <span class="fraction">7/9</span>
+            <span class="fraction">7/12</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">96.29% </span>
+            <span class="strong">90.81% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">78/81</span>
+            <span class="fraction">89/98</span>
           </div>
         </div>
         <p class="quiet">
@@ -137,7 +137,29 @@
 <a name='L79'></a><a href='#L79'>79</a>
 <a name='L80'></a><a href='#L80'>80</a>
 <a name='L81'></a><a href='#L81'>81</a>
-<a name='L82'></a><a href='#L82'>82</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -189,6 +211,14 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -213,12 +243,17 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as PIXI from "pixi.js";
+import { Setter } from "solid-js";
 import * as TWEEDLE from "tweedle.js";
 import { Assets } from "./assets";
 import { Board } from "./board";
@@ -227,6 +262,8 @@ import { PathFinder } from "./pathfinder";
 import { Options } from "./types";
 &nbsp;
 export class Game {
+  columns: number;
+  rows: number;
   bindResize: () =&gt; void;
   app: PIXI.Application&lt;PIXI.ICanvas&gt;;
   assets: Assets;
@@ -236,6 +273,8 @@ export class Game {
   pathFinder: any;
 &nbsp;
   constructor(columns: number = Options.Columns, rows: number = Options.Rows) {
+    this.columns = columns;
+    this.rows = rows;
     this.bindResize = <span class="fstat-no" title="function not covered" >() =&gt; this.resize();</span>
     this.resizeElement = undefined;
     this.app = this.setPixiApp();
@@ -243,8 +282,8 @@ export class Game {
     this.pathFinder = new PathFinder(columns);
     this.interactions = new Interactions(this.pathFinder);
     this.board = new Board(
-      columns,
-      rows,
+      this.columns,
+      this.rows,
       this.app.stage,
       this.assets,
       this.interactions,
@@ -270,6 +309,14 @@ export class Game {
     window.addEventListener("resize", this.bindResize);
     this.resize();
   }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  addScoreListener(listener: (score: number) =&gt; void): void {</span>
+<span class="cstat-no" title="statement not covered" >    this.board.addScoreUpdateListener(listener);</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+&nbsp;
+<span class="fstat-no" title="function not covered" >  removeScoreListener(setScore: Setter&lt;number&gt;) {</span>
+<span class="cstat-no" title="statement not covered" >    this.board.removeScoreUpdateListener(setScore);</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
   resize(): void {
     if (!this.resizeElement) <span class="branch-0 cbranch-no" title="branch not covered" >return;</span>
@@ -298,6 +345,10 @@ export class Game {
 <span class="fstat-no" title="function not covered" >  getView(): HTMLCanvasElement {</span>
 <span class="cstat-no" title="statement not covered" >    return this.app.view as HTMLCanvasElement;</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
+&nbsp;
+<span class="fstat-no" title="function not covered" >  resetBoard(): void {</span>
+<span class="cstat-no" title="statement not covered" >    this.board.reset();</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -313,7 +364,7 @@ export class Game {
         rel="noopener noreferrer"
         >istanbul</a
       >
-      at 2023-02-25T22:08:38.044Z
+      at 2023-02-27T22:22:59.542Z
     </div>
     <script src="prettify.js"></script>
     <script>

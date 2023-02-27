@@ -18,10 +18,7 @@ export class Game {
   resizeElement: HTMLDivElement | undefined;
   pathFinder: any;
 
-  constructor(
-    columns: number = Options.Columns,
-    rows: number = Options.Rows,
-  ) {
+  constructor(columns: number = Options.Columns, rows: number = Options.Rows) {
     this.columns = columns;
     this.rows = rows;
     this.bindResize = () => this.resize();
@@ -36,7 +33,7 @@ export class Game {
       this.app.stage,
       this.assets,
       this.interactions,
-      this.pathFinder,
+      this.pathFinder
     );
   }
 

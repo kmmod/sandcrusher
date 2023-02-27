@@ -7,7 +7,7 @@ import { Gem } from "../../src/lib/gem";
 import { Interactions } from "../../src/lib/interactions";
 import { PathFinder } from "../../src/lib/pathfinder";
 import { Tile } from "../../src/lib/tile";
-import { GemType, Options } from "../../src/lib/types";
+import { GemType } from "../../src/lib/types";
 
 let board: Board;
 
