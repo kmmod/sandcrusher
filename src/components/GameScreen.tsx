@@ -4,6 +4,8 @@ import GameHeader from "./GameHeader";
 import GameView from "./GameView";
 import ScoreCounter from "./ScoreCounter";
 
+export type GameViewProps = { game: Game };
+
 const GameScreen: Component = () => {
   const game = new Game(8, 8);
 

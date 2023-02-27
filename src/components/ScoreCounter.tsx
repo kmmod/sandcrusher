@@ -1,9 +1,7 @@
 import { Component, createSignal, onCleanup, onMount } from "solid-js";
-import { Game } from "../lib/main";
+import { GameViewProps } from "./GameScreen";
 
-type ScoreCounterProps = { game: Game };
-
-const ScoreCounter: Component<ScoreCounterProps> = (props) => {
+const ScoreCounter: Component<GameViewProps> = (props) => {
   const [score, setScore] = createSignal(0);
 
   onMount(() => {

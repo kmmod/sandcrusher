@@ -1,8 +1,5 @@
-import { Component, onCleanup } from "solid-js";
-import { onMount } from "solid-js";
-import { Game } from "../lib/main";
-
-type GameViewProps = { game: Game };
+import { Component, onMount, onCleanup } from "solid-js";
+import { GameViewProps } from "./GameScreen";
 
 const GameView: Component<GameViewProps> = (props) => {
   let container!: HTMLDivElement;
