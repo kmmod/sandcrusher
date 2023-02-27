@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js";
+import { Setter } from "solid-js";
 import * as TWEEDLE from "tweedle.js";
 import { Assets } from "./assets";
 import { Gem } from "./gem";
@@ -14,12 +15,13 @@ export class Board {
   stage: PIXI.Container<PIXI.DisplayObject>;
   assets: Assets;
   interactions: Interactions;
+  score: number;
   tiles: Tile[];
   nextTiles: Tile[];
   pathFinder: PathFinder;
   pathTrace: PIXI.Graphics;
   pathTraceTween: TWEEDLE.Tween<PIXI.Graphics>;
-  updateScore: any;
+  onScoreUpdateListeners: { (score: number): void }[];
 
   constructor(
     columns: number,
@@ -27,8 +29,7 @@ export class Board {
     stage: PIXI.Container,
     assets: Assets,
     interactions: Interactions,
-    pathFinder: PathFinder,
-    updateScore: any
+    pathFinder: PathFinder
   ) {
     this.columns = columns;
     this.rows = rows;
@@ -36,11 +37,12 @@ export class Board {
     this.assets = assets;
     this.interactions = interactions;
     this.pathFinder = pathFinder;
+    this.score = 0;
     this.tiles = [];
     this.nextTiles = [];
     this.pathTrace = new PIXI.Graphics();
     this.pathTraceTween = new TWEEDLE.Tween(this.pathTrace);
-    this.updateScore = updateScore;
+    this.onScoreUpdateListeners = [];
   }
 
   resizeTiles(width: number, height: number): void {
@@ -54,6 +56,22 @@ export class Board {
       tile.setPosition(x, y);
       tile.updateGemTransform();
     });
+  }
+
+  addScoreUpdateListener(listener: (score: number) => void): void {
+    this.onScoreUpdateListeners.push(listener);
+  }
+
+  removeScoreUpdateListener(setScore: Setter<number>) {
+    this.onScoreUpdateListeners = this.onScoreUpdateListeners.filter(
+      (listener) => listener !== setScore
+    );
+  }
+
+  updateScore(amount: number): void {
+    const powerAmount = Math.pow(amount, 2);
+    this.score += powerAmount;
+    this.onScoreUpdateListeners.forEach((listener) => listener(this.score));
   }
 
   async initTiles(): Promise<void> {

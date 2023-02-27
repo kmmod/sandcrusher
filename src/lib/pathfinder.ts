@@ -128,7 +128,7 @@ export class PathFinder {
   pathFound: boolean;
   nodes: Node[];
   path: Node[];
-  onPathFoundListeners: any[];
+  onPathFoundListeners: { (path: Node[]): void }[];
 
   constructor(columns: number) {
     this.columns = columns;
@@ -264,9 +264,7 @@ export class PathFinder {
   }
 
   onPathFound(path: Node[]): void {
-    this.onPathFoundListeners.forEach((listener) => {
-      listener(path);
-    });
+    this.onPathFoundListeners.forEach((listener) => listener(path));
   }
 
   resetNodes(): void {

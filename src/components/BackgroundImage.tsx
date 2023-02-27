@@ -2,6 +2,7 @@ import type { Component } from "solid-js";
 
 const BackgroundImage: Component = () => {
   const fadeIn = (img: HTMLImageElement) => {
+    img.classList.remove("opacity-0");
     img.classList.add("transition-opacity");
     img.classList.add("duration-[2500ms]");
     img.classList.add("opacity-100");

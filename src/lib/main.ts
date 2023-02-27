@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js";
+import { Setter } from "solid-js";
 import * as TWEEDLE from "tweedle.js";
 import { Assets } from "./assets";
 import { Board } from "./board";
@@ -9,9 +10,6 @@ import { Options } from "./types";
 export class Game {
   columns: number;
   rows: number;
-  score: number;
-  scoreCallback: any;
-  bindUpdateScore: (amount: number) => void;
   bindResize: () => void;
   app: PIXI.Application<PIXI.ICanvas>;
   assets: Assets;
@@ -23,13 +21,9 @@ export class Game {
   constructor(
     columns: number = Options.Columns,
     rows: number = Options.Rows,
-    scoreCallback: any
   ) {
     this.columns = columns;
     this.rows = rows;
-    this.score = 0;
-    this.scoreCallback = scoreCallback;
-    this.bindUpdateScore = (amount: number) => this.updateScore(amount);
     this.bindResize = () => this.resize();
     this.resizeElement = undefined;
     this.app = this.setPixiApp();
@@ -43,7 +37,6 @@ export class Game {
       this.assets,
       this.interactions,
       this.pathFinder,
-      this.bindUpdateScore
     );
   }
 
@@ -64,6 +57,14 @@ export class Game {
 
     window.addEventListener("resize", this.bindResize);
     this.resize();
+  }
+
+  addScoreListener(listener: (score: number) => void): void {
+    this.board.addScoreUpdateListener(listener);
+  }
+
+  removeScoreListener(setScore: Setter<number>) {
+    this.board.removeScoreUpdateListener(setScore);
   }
 
   resize(): void {
@@ -96,11 +97,5 @@ export class Game {
 
   resetBoard(): void {
     this.board.reset();
-  }
-
-  updateScore(amount: number): void {
-    const powerAmount = Math.pow(amount, 2);
-    this.score += powerAmount;
-    this.scoreCallback(this.score);
   }
 }

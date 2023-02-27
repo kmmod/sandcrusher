@@ -1,18 +1,17 @@
-import { Component, createSignal } from "solid-js";
+import { Component } from "solid-js";
 import { Game } from "../lib/main";
 import GameHeader from "./GameHeader";
 import GameView from "./GameView";
 import ScoreCounter from "./ScoreCounter";
 
 const GameScreen: Component = () => {
-  const [score, setScore] = createSignal(0);
-  const game = new Game(8, 8, setScore);
+  const game = new Game(8, 8);
 
   return (
     <div class="absolute w-full h-full">
       <GameHeader />
       <GameView game={game} />
-      <ScoreCounter score={score} />
+      <ScoreCounter game={game} />
     </div>
   );
 };
