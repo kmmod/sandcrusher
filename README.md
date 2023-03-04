@@ -2,6 +2,8 @@
 
 ![Sandcrusher game](./public/img/sandcrusher-04.gif)
 
+Live demo: https://sandcrusher.netlify.app/
+
 Web game made with `typescript`, using `PixiJS` and `SolidJS`, bootstrapped with `Vite`
 
 - [Vite](https://vitejs.dev)
